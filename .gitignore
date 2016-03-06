@@ -1,0 +1,9 @@
+# confidential files
+confidential.js
+
+# database files
+*.db
+
+node module files
+/node_modules/*
+
