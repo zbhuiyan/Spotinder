@@ -1,7 +1,8 @@
 
 var mongoose = require('mongoose'); 
 var express = require('express');
-var wiki = require('./routes/wikis');
+
+var routes = require('./routes/routes');
 var app = express();
 
 var morgan = require('morgan');             // log requests to the console (express4)
@@ -9,12 +10,11 @@ var bodyParser = require('body-parser');    // pull information from HTML POST (
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
 
 var mongoURI = process.env.PROD_MONGODB || "mongodb://localhost/test";
 console.log(mongoURI)
 mongoose.connect(mongoURI);
+
 
 // configuration
 app.use(cookieParser());
@@ -29,13 +29,36 @@ app.use(methodOverride());
 app.get('/', function(req, res){
     res.sendfile('public/views/index.html');
 });
-app.get('/api/home', wiki.home);
-app.get('/api/header/:title', wiki.loadPageGET);
-app.post('/api/header/:title', wiki.updateWikiPOST);
-app.post('/api/createNew', wiki.saveNewWikiPOST);
-app.get('*', wiki.catchAnything);
 
-var PORT = process.env.PORT || 3000;
+// app.get('/api/home', routes.home);
+// app.get('/api/header/:title', routes.loadPageGET);
+// app.post('/api/header/:title', routes.updateWikiPOST);
+// app.post('/api/createNew', routes.saveNewWikiPOST);
+
+
+
+
+
+var app = express();
+
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
+
+
+app.get('/login', routes.login);
+
+app.get('/callback', routes.callback);
+
+app.get('/refresh_token', routes.refresh_token);
+
+// AngularJS requests
+app.get('*', function (req, res) {
+  res.sendFile(__dirname + '/public/views/index.html');
+});
+
+// app.get('*', routes.catchAnything);
+
+var PORT = process.env.PORT || 8888;
     app.listen(PORT, function() {
       console.log("Application running on port: ", PORT);
 });
