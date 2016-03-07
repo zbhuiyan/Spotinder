@@ -16,6 +16,7 @@ var request = require('request'); // "Request" library
  * @return {string} The generated string
  */
 var generateRandomString = function(length) {
+
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -34,6 +35,7 @@ routes = {};
 
 routes.login = function(req, res) {
 
+  console.log("i am in login");
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 
@@ -53,7 +55,10 @@ routes.callback = function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
+  //have playlists show up
 
+  
+  console.log('I am in callback');
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -113,6 +118,7 @@ routes.callback = function(req, res) {
 
 routes.refresh_token = function(req, res) {
 
+  console.log('I am in refresh_token');
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {

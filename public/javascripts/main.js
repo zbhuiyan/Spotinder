@@ -1,4 +1,4 @@
-var wikiApp = angular.module('wikiApp', []);
+var spotinderApp = angular.module('spotinderApp', []);
 
 function mainController($scope, $http) {
   $scope.showNewWiki = false; 
