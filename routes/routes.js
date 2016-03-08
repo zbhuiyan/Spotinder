@@ -29,8 +29,6 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 
-
-
 routes = {}; 
 
 routes.login = function(req, res) {

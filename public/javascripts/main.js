@@ -1,9 +1,7 @@
 var spotinderApp = angular.module('spotinderApp', []);
 
 function mainController($scope, $http) {
-  $scope.showNewWiki = false; 
-  $scope.showEdit = false;
-  // $scope.showContent = false; 
+ 
 
   $http.get('api/home')
     .success(function(data){
