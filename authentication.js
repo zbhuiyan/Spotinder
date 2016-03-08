@@ -35,7 +35,7 @@ var authentication = {
               });
             });
           }
-        });    
+        });
       });
     }));
     passport.use('local-login', new LocalStrategy({
@@ -57,7 +57,7 @@ var authentication = {
           } else {
             return done(null, false);
           }
-        }); 
+        });
       });
     }));
     return passport;

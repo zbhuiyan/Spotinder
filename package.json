@@ -49,5 +49,9 @@
     "url": "https://github.com/eddiemoore/angular-spotify/issues"
   },
   "homepage": "https://github.com/eddiemoore/angular-spotify",
-  "dependencies": {}
+  "dependencies": {
+    "connect-mongo": "^1.1.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
 }

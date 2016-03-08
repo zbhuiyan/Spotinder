@@ -58,6 +58,10 @@ var app = angular.module('wikiLab', [
           return AuthService.logout();
         }
       }
+    })
+
+    .otherwise({ //  matches callback#(queryparams)
+      redirectTo: "callback.html"
     });
 
   $locationProvider.html5Mode(true);

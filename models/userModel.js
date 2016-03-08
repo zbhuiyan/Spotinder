@@ -2,7 +2,7 @@
 //storage collection model file for specifying user stored data structure
 
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt');
+// var bcrypt   = require('bcrypt');
 
 var User = mongoose.Schema({
   username: {
@@ -23,11 +23,11 @@ var User = mongoose.Schema({
 // generating a hash
 User.methods.generateHash = function(password) {
   return new Promise(function(resolve, reject) {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(password, salt, function(err, hash) {
-        resolve(hash);
-      });
-    });
+    // bcrypt.genSalt(10, function(err, salt) {
+    //   bcrypt.hash(password, salt, function(err, hash) {
+    //     resolve(hash);
+    //   });
+    // });
   });
 };
 
@@ -37,9 +37,9 @@ User.methods.validPassword = function(password) {
   return new Promise(function(resolve, reject) {
     console.log(password);
     console.log(hash);
-    bcrypt.compare(password, hash, function(err, res) {
-      resolve(res);
-    });
+    // bcrypt.compare(password, hash, function(err, res) {
+    //   resolve(res);
+    // });
   });
 };
 
