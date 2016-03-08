@@ -1,64 +1,78 @@
+//server.js
+//main file for app server hosting
+// MODULE IMPORTS ==============================================================
 
-var mongoose = require('mongoose'); 
-var express = require('express');
+// utility modules
+var path           = require('path');
+var logger         = require('morgan');
+var cookieParser   = require('cookie-parser');
 
-var routes = require('./routes/routes');
-var app = express();
+// express modules
+var express        = require('express');
+var app            = express();
+var bodyParser     = require('body-parser');
 
-var morgan = require('morgan');             // log requests to the console (express4)
-var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
-var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+// database modules
+var mongoose       = require('mongoose');
 
-var mongoURI = process.env.PROD_MONGODB || "mongodb://localhost/test";
-console.log(mongoURI)
-mongoose.connect(mongoURI);
+// route modules
+var routes         = require('./routes/routes');
 
+// authentication modules
+var auth = require('./authentication.js');
+var session        = require('express-session');
+var MongoStore     = require('connect-mongo')(session);
 
-// configuration
+// CONFIGURATION ===============================================================
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
-app.use(morgan('dev'));                                         // log every request to the console
-app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
-app.use(bodyParser.json());                                     // parse application/json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-app.use(methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
 
-//routes 
-app.get('/', function(req, res){
-    res.sendfile('public/views/index.html');
-});
+// CONNECT TO DATABASE =========================================================
+mongoose.connect('mongodb://localhost/wikiLab');
 
-// app.get('/api/home', routes.home);
-// app.get('/api/header/:title', routes.loadPageGET);
-// app.post('/api/header/:title', routes.updateWikiPOST);
-// app.post('/api/createNew', routes.saveNewWikiPOST);
+// SECURITY CONFIGURATION ======================================================
+var passport = auth.configure();
+app.use(session({
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 24 * 60 * 60
+  }),
+  secret: 'karabraxossecretkey',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// ROUTES ======================================================================
 
+// GET requests
+app.get('/api/checkAuthentication', auth.sendAuthentication);
+app.get('/api/getTopicList', routes.getTopicList);
+app.get('/api/getTopic/:topic_url', routes.getTopic);
+app.get('/callback', function(req,res){
+	res.send("callback triggered");
+})
+// POST requests
+app.post('/api/deleteTopic/:topic_url', auth.checkAuthentication, routes.deleteTopic);
+app.post('/api/editTopic/:topic_url?', auth.checkAuthentication, routes.editTopic);
+app.post('/login', auth.login);
+app.post('/signup', auth.signup);
+app.post('/logout', auth.logout);
 
-
-
-var app = express();
-
-app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());
-
-
-app.get('/login', routes.login);
-
-app.get('/callback', routes.callback);
-
-app.get('/refresh_token', routes.refresh_token);
 
 // AngularJS requests
 app.get('*', function (req, res) {
-  res.sendFile(__dirname + '/public/views/index.html');
+	
+	console.log("cannot find the routes");
+  res.sendFile(__dirname + '/public/index.html');
 });
 
-// app.get('*', routes.catchAnything);
-
+// START SERVER ================================================================
 var PORT = process.env.PORT || 8888;
-    app.listen(PORT, function() {
-      console.log("Application running on port: ", PORT);
+app.listen(PORT, function() {
+  console.log("Topics running on port:", PORT);
 });
