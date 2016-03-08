@@ -1,6 +1,10 @@
 <!doctype html>
-<html>
+<html ng-app="spotinderApp">
+ 
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title>Spotinder</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
@@ -14,16 +18,17 @@
         width: 500px;
       }
     </style>
+    <script type="text/javascript" src="/javascripts/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+
   </head>
 
-  <body>
+  <body ng-controller="mainController">
     <div class="container">
       <div id="login">
         <br>
         <h1>Welcome to Spotinder</h1>
-
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-
       </div>
       <div id="loggedin">
         <div id="user-profile">
@@ -33,7 +38,7 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
         <div id = "Genre1">
           <h3><b>Hip Hop</b></h3>
-          <button class="btn btn-default1" id="Like-1">Like</button>
+          <button id = "likeHipHop" ng-click = "likeHipHop()" class="myButton" style="float: center;">Like</button>
           <h4><b>Jay-Z - Magna Carta...Holy Grail</b></h4>
           <h5>Holy Grail (ft. Justin Timberlake)</h5>
           <h5>Tom Ford</h5>
@@ -53,7 +58,7 @@
 
         <div id = "Genre2">
           <h3><b>Indie/Alternative</b></h3>
-          <button class="btn btn-default2" id="Like-2">Like</button>
+          <button id = "likeIndieAlt" ng-click = "likeIndieAlt()" class="myButton" style="float: center;">Like</button>
           <h4><b>Imagine Dragons - Night Visions</b></h4>
           <h5>Radioactive</h5>
           <h5>Tiptoe</h5>
@@ -73,7 +78,7 @@
 
         <div id = "Genre3">
           <h3><b>Pop</b></h3>
-          <button class="btn btn-default3" id="Like-3">Like</button>
+          <button id = "likePop" ng-click = "likePop()" class="myButton" style="float: center;">Like</button>
           <h4><b>Calvin Harris - Motion</b></h4>
           <h5>Blame</h5>
           <h5>Outside (ft. Ellie Goulding)</h5>
@@ -93,7 +98,7 @@
 
         <div id = "Genre4">
           <h3><b>Rock</b></h3>
-          <button class="btn btn-default4" id="Like-4">Like</button>
+          <button id = "likeRock" ng-click = "likeRock()" class="myButton" style="float: center;">Like</button>
           <h4><b>Kings of Leon - Come Around Sundown</b></h4>
           <h5>Pyro</h5>
           <h5>The Immortals</h5>
@@ -113,7 +118,7 @@
 
         <div id = "Genre5">
           <h3><b>Country</b></h3>
-          <button class="btn btn-default5" id="Like-5">Like</button>
+          <button id = "likeCountry" ng-click = "likeCountry()" class="myButton" style="float: center;">Like</button>
           <h4><b>Johnny Cash - Out Among The Stars</b></h4>
           <h5>Out Among the Stars</h5>
           <h5>After All</h5>
