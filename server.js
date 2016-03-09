@@ -30,14 +30,6 @@ app.get('/', function(req, res){
     res.sendfile('public/views/index.html');
 });
 
-// app.get('/api/home', routes.home);
-// app.get('/api/header/:title', routes.loadPageGET);
-// app.post('/api/header/:title', routes.updateWikiPOST);
-// app.post('/api/createNew', routes.saveNewWikiPOST);
-
-
-
-
 
 var app = express();
 
@@ -51,6 +43,7 @@ app.get('/callback', routes.callback);
 
 app.get('/refresh_token', routes.refresh_token);
 
+app.post('/saveLike', routes.saveLike);
 // AngularJS requests
 app.get('*', function (req, res) {
   res.sendFile(__dirname + '/public/views/index.html');

@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html ng-app="spotinderApp">
  
@@ -18,8 +19,9 @@
         width: 500px;
       }
     </style>
+     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/main.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 
   </head>
 
@@ -30,6 +32,7 @@
         <h1>Welcome to Spotinder</h1>
         <a href="/login" class="btn btn-primary">Log in with Spotify</a>
       </div>
+      
       <div id="loggedin">
         <div id="user-profile">
         </div>
@@ -171,7 +174,6 @@
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
       (function() {
-
         /**
          * Obtains parameters from the hash of the URL
          * @return Object
@@ -185,21 +187,16 @@
           }
           return hashParams;
         }
-
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
-
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
-
         var params = getHashParams();
-
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
             error = params.error;
-
         if (error) {
           alert('There was an error during the authentication');
         } else {
@@ -209,7 +206,6 @@
               access_token: access_token,
               refresh_token: refresh_token
             });
-
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
                 headers: {
@@ -217,7 +213,6 @@
                 },
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-
                   $('#login').hide();
                   $('#loggedin').show();
                 }
@@ -227,7 +222,6 @@
               $('#login').show();
               $('#loggedin').hide();
           }
-
           document.getElementById('obtain-new-token').addEventListener('click', function() {
             $.ajax({
               url: '/refresh_token',
@@ -246,4 +240,3 @@
       })();
     </script>
 </html>
-

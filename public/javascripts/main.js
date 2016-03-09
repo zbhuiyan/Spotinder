@@ -2,23 +2,24 @@ var spotinderApp = angular.module('spotinderApp', []);
 
 function mainController($scope, $http) {
  
-
-  $http.get('api/home')
+  $scope.newUser = {};
+  $http.get('/callback')
     .success(function(data){
-      console.log(data);
-      $scope.wiki = data;
-      console.log("b;ahohdo", $scope.wiki)
+      console.log('callbackmain',data);
+      $scope.newUser = data;
+      console.log("bahohdo", $scope.newUser)
     })
     .error(function(data){
       console.log('Error:' + data);
     });
 
 
-  $scope.home = function(){
-    $http.post('api/home')
+  $scope.login = function(){
+    $http.post('/login')
       .success(function(data){
         // $scope.formData = {};
-        $scope.wiki = data;
+        $scope.user = data;
+        console.log('data in login',data);
       })
       .error(function(data){
         console.log('Error:' + data);
@@ -26,7 +27,28 @@ function mainController($scope, $http) {
   };
 
   $scope.likeHipHop = function(){
-    console.log('Im in likehiphop');
+    console.log('im about to save like hiphop')
+    $http.get('/')
+    $scope.newUser = {};
+    .success(function(data){
+      $scope.newUser = data.newUser;
+      console.log("success data");
+      console.log(data);
+    })
+    .error(function(data){
+      console.log('error', data);
+    })
+
+    $http.post('/saveLike',{displayName: $scope.newUser.displayName, id: $scope.newUser.id, email: $scope.newUser.email, spotifyURI: $scope.newUser.spotifyURI, genre: $scope.newUser.genre})
+      .success(function(data){
+        $scope.newUser = data.newUser;
+        $scope.user = data.all;
+        console.log("success", $scope.newUser);
+        console.log("data all", data.all);
+      })
+      .error(function(data){
+        console.log('error', data);
+      })
   };
 
   $scope.likeIndieAlt = function(){
