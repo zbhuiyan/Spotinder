@@ -1,6 +1,6 @@
-var spotinderApp = angular.module('spotinderApp', []);
+var spotinderApp = angular.module('spotinderApp', []); 
 
-function mainController($scope, $http) {
+mainController = function ($scope, $http) {
  
   $scope.newUser = {};
   $http.get('/callback')
@@ -26,29 +26,28 @@ function mainController($scope, $http) {
       });
   };
 
-  $scope.likeHipHop = function(){
+  $scope.likeHipHop = function (){
     console.log('im about to save like hiphop')
-    $http.get('/')
-    $scope.newUser = {};
-    .success(function(data){
-      $scope.newUser = data.newUser;
-      console.log("success data");
-      console.log(data);
-    })
-    .error(function(data){
-      console.log('error', data);
-    })
+    // $http.get('/')
+    // .success(function(data){
+    //   $scope.newUser = data.newUser;
+    //   console.log("success data");
+    //   console.log(data);
+    // })
+    // .error(function(data){
+    //   console.log('error', data);
+    // })
 
-    $http.post('/saveLike',{displayName: $scope.newUser.displayName, id: $scope.newUser.id, email: $scope.newUser.email, spotifyURI: $scope.newUser.spotifyURI, genre: $scope.newUser.genre})
-      .success(function(data){
-        $scope.newUser = data.newUser;
-        $scope.user = data.all;
-        console.log("success", $scope.newUser);
-        console.log("data all", data.all);
-      })
-      .error(function(data){
-        console.log('error', data);
-      })
+    // $http.post('/saveLike',{displayName: $scope.newUser.displayName, id: $scope.newUser.id, email: $scope.newUser.email, spotifyURI: $scope.newUser.spotifyURI, genre: $scope.newUser.genre})
+    //   .success(function(data){
+    //     $scope.newUser = data.newUser;
+    //     $scope.user = data.all;
+    //     console.log("success", $scope.newUser);
+    //     console.log("data all", data.all);
+    //   })
+    //   .error(function(data){
+    //     console.log('error', data);
+    //   })
   };
 
   $scope.likeIndieAlt = function(){
@@ -136,3 +135,5 @@ function mainController($scope, $http) {
 //     }
 
 }
+mainController.$inject = ['$scope', '$http'];
+spotinderApp.controller('mainController', mainController);
