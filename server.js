@@ -57,12 +57,16 @@ app.get('/api/getTopic/:topic_url', routes.getTopic);
 // POST requests
 app.post('/api/deleteTopic/:topic_url', auth.checkAuthentication, routes.deleteTopic);
 app.post('/api/editTopic/:topic_url?', auth.checkAuthentication, routes.editTopic);
-app.post('/login', auth.login);
-app.post('/signup', auth.signup);
-app.post('/logout', auth.logout);
+// app.post('/login', auth.login);
+// app.post('/signup', auth.signup);
+// app.post('/logout', auth.logout);
 
 
 // AngularJS requests
+app.get('/callback', function(req, res) {
+	res.sendFile(__dirname + '/public/partials/callback.html');
+})
+
 app.get('*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });

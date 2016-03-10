@@ -6,7 +6,7 @@ var app = angular.module('wikiLab', [
     'ngRoute', 'spotify'
   ])
   .config(function(SpotifyProvider){
-        SpotifyProvider.setClientId('03ffe0cac0a0401aa6673c3cf6d02ced');
+    SpotifyProvider.setClientId('03ffe0cac0a0401aa6673c3cf6d02ced');
     SpotifyProvider.setRedirectUri('http://localhost:8888/callback');
     SpotifyProvider.setScope('playlist-read-private');
   })
@@ -14,17 +14,23 @@ var app = angular.module('wikiLab', [
     '$routeProvider',
     '$locationProvider',
   function($routeProvider, $locationProvider) {
-
+    
 // angular routing summary
   $routeProvider
+    // .when('/', {
+    //   templateUrl: 'partials/home.html',
+    //   controller: 'HomeController'
+    //   // ,
+    //   // resolve: {
+    //   //   authentication: function(AuthService, $route) {
+    //   //     return AuthService.checkAuthentication();
+    //   //   }
+    //   // }
+    // })
+
     .when('/', {
-      templateUrl: 'partials/home.html',
-      controller: 'HomeController',
-      resolve: {
-        authentication: function(AuthService, $route) {
-          return AuthService.checkAuthentication();
-        }
-      }
+      templateUrl: 'partials/home_test.html',
+      controller: 'HomeController_test'
     })
 
     .when('/new', {
@@ -61,7 +67,7 @@ var app = angular.module('wikiLab', [
     })
 
     .otherwise({ //  matches callback#(queryparams)
-      redirectTo: "callback.html"
+      redirectTo: "/"
     });
 
   $locationProvider.html5Mode(true);

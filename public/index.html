@@ -1,14 +1,10 @@
-<!-- public/index.html -->
-<!-- Main view html page for loading requirement including css style sheets, 
-angular library dependencies, angular app modules, services, controllers. Defining header section of the main page-->
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <base href="/">
 
-  <title>wikiLab</title>
+  <title>Spotinder</title>
 
 
   <!-- CSS -->
@@ -21,6 +17,7 @@ angular library dependencies, angular app modules, services, controllers. Defini
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min.js"></script>
+  <script src="js/angular-local-storage.min.js"></script>
   <script src="js/angular-spotify.js"></script>
 
   <!-- ANGULAR CUSTOM -->
@@ -29,6 +26,8 @@ angular library dependencies, angular app modules, services, controllers. Defini
   <script src="js/services/AuthService.js"></script>
   <script src="js/services/TopicService.js"></script>
 
+
+  <script src="js/controllers/HomeController_test.js"></script>
   <script src="js/controllers/HomeController.js"></script>
   <script src="js/controllers/LoginController.js"></script>
   <script src="js/controllers/MainController.js"></script>
@@ -40,7 +39,7 @@ angular library dependencies, angular app modules, services, controllers. Defini
 
   <!-- HEADER -->
   <header id="section-header" class="container-body">
-    <a href="/" class="logo"><span>Wiki</span></a>
+    <a href="/" class="logo"><span>Spotinder</span></a>
     
   </header>
 

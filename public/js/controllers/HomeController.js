@@ -6,8 +6,6 @@ app.controller('HomeController', function($scope, $location, TopicService, Spoti
   
   $scope.topicSearch = "";
 
-
-
   Spotify.login();
 
   Spotify.getAlbum('0sNOF9WDwhWunNAHPD3Baj').then(function (data) {

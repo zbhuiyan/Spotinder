@@ -50,6 +50,7 @@
   },
   "homepage": "https://github.com/eddiemoore/angular-spotify",
   "dependencies": {
+    "angular-local-storage": "^0.2.6",
     "connect-mongo": "^1.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0"
