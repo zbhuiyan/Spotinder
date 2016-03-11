@@ -13,7 +13,7 @@ var app            = express();
 var bodyParser     = require('body-parser');
 
 // database modules
-// var mongoose       = require('mongoose');
+var mongoose       = require('mongoose');
 
 // route modules
 var routes         = require('./routes/routes');
@@ -21,7 +21,7 @@ var routes         = require('./routes/routes');
 // authentication modules
 var auth = require('./authentication.js');
 var session        = require('express-session');
-// var MongoStore     = require('connect-mongo')(session);
+var MongoStore     = require('connect-mongo')(session);
 
 // CONFIGURATION ===============================================================
 app.use(logger('dev'));
@@ -31,21 +31,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CONNECT TO DATABASE =========================================================
-// mongoose.connect('mongodb://localhost/wikiLab');
+mongoose.connect('mongodb://localhost/spotinder');
 
 // SECURITY CONFIGURATION ======================================================
-var passport = auth.configure();
-app.use(session({
-  // store: new MongoStore({
-  //   mongooseConnection: mongoose.connection,
-  //   ttl: 24 * 60 * 60
-  // }),
-  secret: 'karabraxossecretkey',
-  resave: true,
-  saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// var passport = auth.configure();
+// app.use(session({
+//   store: new MongoStore({
+//     mongooseConnection: mongoose.connection,
+//     ttl: 24 * 60 * 60
+//   }),
+//   secret: 'karabraxossecretkey',
+//   resave: true,
+//   saveUninitialized: true
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // ROUTES ======================================================================
 
@@ -60,7 +60,8 @@ app.post('/api/editTopic/:topic_url?', auth.checkAuthentication, routes.editTopi
 // app.post('/login', auth.login);
 // app.post('/signup', auth.signup);
 // app.post('/logout', auth.logout);
-
+app.post('/api/addLike', routes.addLike);
+app.post('/api/addUser', routes.addUser);
 
 // AngularJS requests
 app.get('/callback', function(req, res) {
@@ -68,6 +69,7 @@ app.get('/callback', function(req, res) {
 })
 
 app.get('*', function (req, res) {
+  console.log('cannot find route!!!!');
   res.sendFile(__dirname + '/public/index.html');
 });
 

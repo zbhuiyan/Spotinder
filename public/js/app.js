@@ -2,7 +2,7 @@
 // main angular app  module file
 // angular routing summary for client side routing
 
-var app = angular.module('wikiLab', [
+var app = angular.module('wikilab', [
     'ngRoute', 'spotify'
   ])
   .config(function(SpotifyProvider){
@@ -14,28 +14,18 @@ var app = angular.module('wikiLab', [
     '$routeProvider',
     '$locationProvider',
   function($routeProvider, $locationProvider) {
-    
+
 // angular routing summary
   $routeProvider
-    // .when('/', {
-    //   templateUrl: 'partials/home.html',
-    //   controller: 'HomeController'
-    //   // ,
-    //   // resolve: {
-    //   //   authentication: function(AuthService, $route) {
-    //   //     return AuthService.checkAuthentication();
-    //   //   }
-    //   // }
-    // })
 
     .when('/', {
       templateUrl: 'partials/home_test.html',
       controller: 'HomeController_test'
     })
 
-    .when('/new', {
-      templateUrl: 'partials/topic.html',
-      controller: 'TopicController'
+    .when('/user', {
+      templateUrl: 'partials/userPage.html',
+      controller: 'userController'
     })
 
     .when('/wiki/:topic_url/:cmd', {

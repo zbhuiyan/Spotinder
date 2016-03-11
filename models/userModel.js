@@ -6,12 +6,14 @@ var mongoose = require('mongoose');
 
 var User = mongoose.Schema({
   username: {
+    type: String
+  },
+  userid:{
     type: String,
     required: true
   },
-  password: {
-    type: String,
-    required: true
+  like:{
+    type: Array
   },
   created: {
     type: Date,
@@ -19,28 +21,5 @@ var User = mongoose.Schema({
     default: Date.now
   }
 });
-
-// generating a hash
-User.methods.generateHash = function(password) {
-  return new Promise(function(resolve, reject) {
-    // bcrypt.genSalt(10, function(err, salt) {
-    //   bcrypt.hash(password, salt, function(err, hash) {
-    //     resolve(hash);
-    //   });
-    // });
-  });
-};
-
-// checking if password is valid
-User.methods.validPassword = function(password) {
-  var hash = this.password;
-  return new Promise(function(resolve, reject) {
-    console.log(password);
-    console.log(hash);
-    // bcrypt.compare(password, hash, function(err, res) {
-    //   resolve(res);
-    // });
-  });
-};
 
 module.exports = mongoose.model("users", User);

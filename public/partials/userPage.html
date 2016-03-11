@@ -1,0 +1,41 @@
+<div class="container">
+  <div id="login">
+    <br>
+    <h1>Welcome to Spotinder</h1>
+  </div>
+  
+  <div id="loggedin">
+    <div id="user-profile">
+      <h1>Logged in as {{userData.display_name}}</h1>
+      <div class="media">
+        <div class="pull-left">
+          <img class="media-object" width="150" src="{{userData.images.0.url}}" />
+        </div>
+        <div class="media-body">
+          <dl class="dl-horizontal">
+            <dt>Display name</dt><dd class="clearfix">{{userData.display_name}}</dd>
+            <dt>Id</dt><dd>{{userData.id}}</dd>
+            <dt>Email</dt><dd>{{userData.email}}</dd>
+            <dt>Spotify URI</dt><dd><a href="{{userData.external_urls.spotify}}">{{userData.external_urls.spotify}}</a></dd>
+            <dt>Link</dt><dd><a href="{{userData.href}}">{{userData.href}}</a></dd>
+            <dt>Profile Image</dt><dd class="clearfix"><a href="{{userData.images.0.url}}">{{userData.images.0.url}}</a></dd>
+            <dt>Country</dt><dd>{{userData.country}}</dd>
+          </dl>
+        </div>
+      </div>      
+    </div>
+
+    <div id = "Genre1">
+      <h3><b>Hip Hop</b></h3>
+        <ul>
+          <li ng-repeat="song in hip_hop_genre">
+              <div class="media-details">
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton" style="float: center;">Like</button>
+                {{song.name}}
+                <div> {{song.artist}} </div>
+              </div>
+          </li>
+        </ul>
+  </div>
+</div>
+

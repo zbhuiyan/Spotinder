@@ -1,9 +1,10 @@
 // public/js/services/TodoService.js
 // The main angular service for sharing functions and variables
 
-app.service('TopicService', function($http, $q, $location) {
-  this.current_topic_url = '';
-  this.editing = false;
+app.service('spotinderService', function($http, $q, $location) {
+  // this.current_topic_url = '';
+  // this.editing = false;
+  // this.userData = "";
 
 // fucntion for creating topic
   this.edit = function(topicData) {
@@ -62,6 +63,42 @@ app.service('TopicService', function($http, $q, $location) {
         return response.data;
       });
     return topics;
+  };
+
+  this.addLike = function(data){
+    console.log("spotinderService addLike");
+      var responseData = $http.post('/api/addLike/', data).then(function (response) {
+      console.log("response.data");
+      console.log(response.data);
+
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return {
+          title: '',
+          content: ''
+        };
+      }
+    });
+    return responseData;
+  };
+
+  this.addUser = function(data){
+    console.log("spotinderService addUser");
+      var responseData = $http.post('/api/addUser/', data).then(function (response) {
+      console.log("response.data");
+      console.log(response.data);
+
+      if (response.data.success) {
+        return response.data.users;
+      } else {
+        return {
+          title: '',
+          content: ''
+        };
+      }
+    });
+    return responseData;
   };
 
 // function for getting a specific topic info

@@ -1,10 +1,13 @@
-app.controller('HomeController_test', ['$scope', 'Spotify', function ($scope, Spotify) {
+app.controller('HomeController_test', function ($scope, $location, Spotify, spotinderService) {
+
 
     $scope.searchArtist = function () {
       Spotify.search($scope.searchartist, 'artist').then(function (data) {
         $scope.artists = data.artists.items;
       });
     };
+
+
 
     $scope.login = function () {
       Spotify.login().then(function (data) {
@@ -13,8 +16,22 @@ app.controller('HomeController_test', ['$scope', 'Spotify', function ($scope, Sp
         Spotify.setAuthToken(data);
         Spotify.getCurrentUser().then(function (data) {
           console.log("getCurrentUser");
-          console.log(data);
+
+          spotinderService.userData = data;
+          var confirmationPromise = spotinderService.addUser(data);
+            confirmationPromise.then(
+                function(confirmation) {
+                    console.log("addUser confirmation");
+                    console.log(confirmation);
+                },
+                function(error) {
+                    console.log('ERROR: Promise error in TopicController', error);
+                }
+            );
+          $location.path('/user');
+
         });
+
 
       }, function () {
         console.log('didn\'t log in');
@@ -101,4 +118,4 @@ app.controller('HomeController_test', ['$scope', 'Spotify', function ($scope, Sp
     //   console.log(data);
     // });
 
-  }]);
+  });

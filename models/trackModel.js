@@ -2,25 +2,20 @@
 //storage collection model file for specifying topic stored data structure
 
 var mongoose = require('mongoose');
-var ObjectId = mongoose.Schema.Types.ObjectId;
 
-var Topic = mongoose.Schema({
+var track = mongoose.Schema({
   user:{
-    type: ObjectId,
+    type: String,
     required: true
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  url: {
+  artist: {
     type: String,
     required: true,
   },  
-  content: {
-    type: String,
-    required: true
-  },
   created: {
     type: Date,
     required: true,
@@ -28,4 +23,4 @@ var Topic = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("topic", Topic);
+module.exports = mongoose.model("track", track);

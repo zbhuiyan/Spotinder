@@ -3,10 +3,95 @@
 //main routing summary of app server side handling
 var express = require('express');
 var mongoose = require('mongoose');
-var Topic = require('../models/topicModel');
-var ObjectId = mongoose.Types.ObjectId;
+var Track = require('../models/trackModel');
+var User = require('../models/userModel');
+
 
 var routes = {
+
+  addUser: function(req, res){
+    // User.find().remove().exec();
+    // Track.find().remove().exec();
+
+    var confirm = function () {
+      console.log("save process");
+      // if (err) {
+      //   return res.send({
+      //     success: false,
+      //     message: 'ERROR: Could not create topic'
+      //   });
+      // }
+      // return res.send({
+      //   success: true,
+      //   name: req.body.name,
+      //   artist: req.body.artist,
+      //   user: req.body.user
+      // });
+      
+      User.find(function(err, users) {
+      if (err) {
+        console.log("ERROR: Cannot retrieve users")
+        res.status(404);
+      }
+      res.json({
+        success: true,
+        users: users
+      });
+      // var topicHeaders = [];
+      // for (var i = 0; i < topics.length; i++) {
+        // topicHeaders.push({
+          // title: topics[i].title,
+          // url: topics[i].url
+        // });
+      // }
+      // res.status(200).json(topicHeaders);
+      });
+
+    };
+
+    // console.log(req.body.display_name);
+    // console.log(req.body.id);
+      var query = {'username':req.body.display_name};
+      var newData = {
+            username: req.body.display_name,
+          }
+
+      User.findOneAndUpdate(query, newData, {upsert:true}, function(err, doc){
+          if (err) return res.send(500, { error: err });
+
+          return res.send("succesfully saved");
+
+      });
+      confirm();
+
+    // User.create({
+    //         username: req.body.display_name,
+    //         userid: req.body.id,
+    //       }, confirm);
+  },   
+  addLike: function(req, res){
+   var confirm = function (err) {
+      console.log("save process");
+      if (err) {
+        return res.send({
+          success: false,
+          message: 'ERROR: Could not create topic'
+        });
+      }
+      return res.send({
+        success: true,
+        name: req.body.name,
+        artist: req.body.artist,
+        user: req.body.user
+      });
+    };
+    console.log(req.body);
+    Track.create({
+            user: req.body.user,
+            name: req.body.name,
+            artist: req.body.artist
+          }, confirm);
+  },
   getTopic: function(req, res) {
     Topic.findOne({url: req.params.topic_url}, function (err, topic) {
       if (err) {
