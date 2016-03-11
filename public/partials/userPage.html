@@ -36,13 +36,65 @@
       <h3><b>Hip Hop</b></h3>
         <ul>
           <li ng-repeat="song in hip_hop_genre">
-              <div class="media-details">
-              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton" style="float: center;">Like</button>
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton">Like</button>
+                {{song.name}}
+                <div> {{song.artist}} </div>
+          </li>  
+          <br>
+          <br>
+          <br>
+        <h3><b>Pop</b></h3>
+          <li ng-repeat="song in pop_genre">
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton">Like</button>
                 {{song.name}}
                 <div> {{song.artist}} </div>
               </div>
           </li>
+          <br>
+          <br>
+          <br>
+    </div>
+      <div id = "Genre3">
+        <h3><b>Rock</b></h3>
+          <li ng-repeat="song in rock_genre">
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton">Like</button>
+                {{song.name}}
+                <div> {{song.artist}} </div>
+          </li>
+          <br>
+          <br>
+          <br>
+          <h3><b>Country</b></h3>
+          <li ng-repeat="song in country_genre">
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton">Like</button>
+                {{song.name}}
+                <div> {{song.artist}} </div>
+              </div>
+          </li>
+          <br>
+          <br>
+          <br>
+      </div>
+      <div id = "Genre5">
+          <h3><b>Alternative</b></h3>
+          <li ng-repeat="song in alternative_genre">
+              <button id = "like" ng-click = "like(song.genre, song.name, song.artist)" class="myButton">Like</button>
+                {{song.name}}
+                <div> {{song.artist}} </div>
+              </div>
+          </li>
+      </div>
         </ul>
-  </div>
+      
+    
+<!-- 
+
+     <div id = "Genre2">
+      <h3><b>Pop</b></h3>
+        <ul>
+          
+        </ul>
+    </div>
 </div>
 
+ -->

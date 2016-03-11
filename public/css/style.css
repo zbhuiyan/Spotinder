@@ -36,11 +36,11 @@ h3 {
   left: 70px;
   bottom: 300px;
 }*/
-#dl-horizontal {
+/*#dl-horizontal {
   position: absolute;
   right: 500px;
 }
-/*.media-object {
+*//*.media-object {
  position: absolute;
  left: 80px;
  bottom:250px;
@@ -65,9 +65,25 @@ h3 {
   top:20%;
 }
 #Genre1 {
+  display: inline-block;
   position: absolute;
-  right: 80px;
-  bottom: -150%;
+  right: 100px;
+  top: 200px;
+}
+
+#Genre3{
+  display: inline-block;
+  position: absolute;
+  width: 40%;
+  right:100px;
+  top:900px;
+}
+#Genre5 {
+  display: inline-block;
+  position: absolute;
+  width: 40%;
+  right:100px;
+  top:1600px;
 }
  /*FORM ELEMENTS ============================================================ */
 label, input, textarea, button {
@@ -136,7 +152,7 @@ button:active {
 }
  /*CONTAINERS =============================================================== */
 .container-body {
-  width: 100%;
+  width: 100%;''
 }
 .container-limiting {
   width: 90%;
@@ -205,6 +221,7 @@ button:active {
   font-size: 12pt;
   font-weight: 400;
   padding: 10px;
+
 }
 .container-mode-button {
   display: flex;
@@ -238,3 +255,116 @@ button:active {
   -webkit-flex-wrap: wrap;  Safari 
   flex-wrap: wrap;
 }
+
+
+/*header Css*/
+/*body{ 
+  font-family: 'bitter'
+}
+#addNew{ 
+  float: left;
+  width: 15%;
+}
+
+#searchStuff{ 
+  width: 50%;
+  float: right; 
+}
+
+#inputBoxContent{ 
+  height: 70px; 
+} 
+
+.myButton{ 
+  display: block;
+  display: inline-block;
+  text-align: center; 
+  background-color: #53346D; 
+  color: white; 
+  border-radius: 5; 
+  -moz-border-radius: 10px;
+  -webkit-border-radius:10px; 
+  font-family: 'bitter'; 
+  font-size: 15pt; 
+  padding: 5px 15px;
+  margin: 0px 5px;
+}
+
+
+/*sidebar CSS*/
+/*#wrapper {
+
+  padding-left: 250px;
+  transition: all 0.4s ease 0s;
+}
+
+#sidebar-wrapper {
+  padding-top: 25px;
+  margin-left: -250px;
+  left: 250px;
+  width: 250px;
+  background: linear-gradient(to top right, #000000, #53346D);
+  color: #FAEBD7;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+
+#sidebar-wrapper a{
+  color:#FAEBD7;
+  position: fixed;
+  font-weight: normal;
+  font-size: 110%;
+  height: 100%;
+  font-family: 'bitter'; 
+  
+}
+
+#page-content-wrapper {
+  width: 100%;
+}
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+
+}
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #F0FFFF;
+    background: rgba(255,255,255,0.2);
+}
+
+@media (max-width:767px) {
+
+    #wrapper {
+      padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+      left: 0;
+    }
+
+    #wrapper.active {
+      position: relative;
+      left: 250px;
+    }
+
+    #wrapper.active #sidebar-wrapper {
+      left: 250px;
+      width: 250px;
+      transition: all 0.4s ease 0s;
+    }
+}*/
