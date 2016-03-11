@@ -18,16 +18,16 @@ app.controller('HomeController_test', function ($scope, $location, Spotify, spot
           console.log("getCurrentUser");
 
           spotinderService.userData = data;
-          var confirmationPromise = spotinderService.addUser(data);
-            confirmationPromise.then(
-                function(confirmation) {
-                    console.log("addUser confirmation");
-                    console.log(confirmation);
-                },
-                function(error) {
-                    console.log('ERROR: Promise error in TopicController', error);
-                }
-            );
+          // var confirmationPromise = spotinderService.addUser(data);
+          //   confirmationPromise.then(
+          //       function(confirmation) {
+          //           console.log("addUser confirmation");
+          //           console.log(confirmation);
+          //       },
+          //       function(error) {
+          //           console.log('ERROR: Promise error in TopicController', error);
+          //       }
+          //   );
           $location.path('/user');
 
         });

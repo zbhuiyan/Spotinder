@@ -1,3 +1,9 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+
 <div class="container">
   <div id="login">
     <br>
@@ -6,20 +12,21 @@
   
   <div id="loggedin">
     <div id="user-profile">
-      <h1>Logged in as {{userData.display_name}}</h1>
+      <h2>Logged in as {{userData.display_name}}</h2>
       <div class="media">
         <div class="pull-left">
-          <img class="media-object" width="150" src="{{userData.images.0.url}}" />
+          <img class="media-object" width="300" src="{{userData.images.0.url}}" />
         </div>
         <div class="media-body">
           <dl class="dl-horizontal">
-            <dt>Display name</dt><dd class="clearfix">{{userData.display_name}}</dd>
-            <dt>Id</dt><dd>{{userData.id}}</dd>
-            <dt>Email</dt><dd>{{userData.email}}</dd>
-            <dt>Spotify URI</dt><dd><a href="{{userData.external_urls.spotify}}">{{userData.external_urls.spotify}}</a></dd>
-            <dt>Link</dt><dd><a href="{{userData.href}}">{{userData.href}}</a></dd>
-            <dt>Profile Image</dt><dd class="clearfix"><a href="{{userData.images.0.url}}">{{userData.images.0.url}}</a></dd>
-            <dt>Country</dt><dd>{{userData.country}}</dd>
+            <b>Display name: </b>{{userData.display_name}}<br>
+            <b>Id: </b>{{userData.id}}<br>
+            <b>Email: </b>{{userData.email}} <br>
+            <b>Spotify URI: </b><a href="{{userData.external_urls.spotify}}">{{userData.external_urls.spotify}}</a> <br>
+            <!-- <dt><b>Link</b></dt><dd><a href="{{userData.href}}">{{userData.href}}</a></dd>
+            <dt><b>Profile Image</b></dt><dd class="clearfix"><a href="{{userData.images.0.url}}">{{userData.images.0.url}}</a></dd> -->
+            <b>Country: </b>{{userData.country}}
+            <!-- <dt><b>Country</b></dt><dd>{{userData.country}}</dd> -->
           </dl>
         </div>
       </div>      

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+  <link rel="stylesheet" href="css/style.css">
   <title>angular-spotify demo!</title>
   <style>
     ul {
@@ -21,11 +22,10 @@
     }
   </style>
 </head>
+<div class = "loginpage">
 <body ng-controller="MainController">
-
   <button ng-click="login()">Login with Spotify</button>
-
-  <input type="text" ng-model="searchartist" ng-change="searchArtist()" placeholder="Search for an artist">
+  <div id = "searchBox"><input type="text" ng-model="searchartist" ng-change="searchArtist()" placeholder="Search for an artist"> </div>
   <ul>
     <li ng-repeat="artist in artists">
       <a class="media" ng-href="{{artist.external_urls.spotify}}" target="_blank">
@@ -36,5 +36,5 @@
       </a>
     </li>
   </ul>
-
+</div>
 </body>

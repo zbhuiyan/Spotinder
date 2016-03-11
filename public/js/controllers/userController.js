@@ -6,13 +6,15 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 
 
 
-    Spotify.search('hip_pop', 'track').then(function (data) {
+    Spotify.search('hip_hop', 'track').then(function (data) {
       // console.log(data);
       var trakArray = data['tracks']['items'];
       trakArray.forEach(function(track) {
 		name = track['name'];
 		artist = track['artists'][0]['name'];
-		$scope.hip_hop_genre.push( { 'genre': 'hip_pop', 'name':name, "artist":artist } );
+		$scope.hip_hop_genre.push( { 'genre': 'hip_hop', 'name':name, "artist":artist } );
+		// $scope.hip_hop_genre = $scope.hip_hop_genre(3);
+		console.log("number",$scope.hip_hop_genre.length);
       });
     });
 
