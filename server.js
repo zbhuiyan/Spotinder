@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose'); 
 var express = require('express');
-
+var http = require('http');
 var routes = require('./routes/routes');
 var app = express();
 
@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');    // pull information from HTML POST (
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-
+var session = require('express-session');
 var mongoURI = process.env.PROD_MONGODB || "mongodb://localhost/test";
 console.log(mongoURI)
 mongoose.connect(mongoURI);
@@ -24,37 +24,35 @@ app.use(bodyParser.urlencoded({'extended':'true'}));            // parse applica
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
-
+app.use(session({secret:'blah',
+				resave: true,
+				saveUninitialized:true
+			}));
 //routes 
 app.get('/', function(req, res){
     res.sendfile('public/views/index.html');
 });
 
-// app.get('/api/home', routes.home);
-// app.get('/api/header/:title', routes.loadPageGET);
-// app.post('/api/header/:title', routes.updateWikiPOST);
-// app.post('/api/createNew', routes.saveNewWikiPOST);
 
 
-
-
-
-var app = express();
 
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 
 app.get('/login', routes.login);
-
+app.post('/login', routes.session);
 app.get('/callback', routes.callback);
 
 app.get('/refresh_token', routes.refresh_token);
 
+app.post('/saveLike', routes.saveLike);
 // AngularJS requests
 app.get('*', function (req, res) {
   res.sendFile(__dirname + '/public/views/index.html');
 });
+
+
 
 // app.get('*', routes.catchAnything);
 

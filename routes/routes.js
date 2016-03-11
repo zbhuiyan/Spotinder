@@ -4,18 +4,18 @@ var router = express.Router();
 var mongoose = require('mongoose'); 
 var path = require('path'); 
 var querystring = require('querystring');
+var router = express.Router(); 
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 var request = require('request'); // "Request" library
 
-// var Wiki = require(path.join(__dirname,'../models/wikiModel'));
-
-
+var User = require(path.join(__dirname,'../models/userModel'));
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
 var generateRandomString = function(length) {
+
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -28,12 +28,11 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 
-
-
 routes = {}; 
 
 routes.login = function(req, res) {
 
+  console.log("i am in login");
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
 
@@ -54,6 +53,9 @@ routes.callback = function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
 
+
+  
+  console.log('I am in callback');
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -92,15 +94,18 @@ routes.callback = function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body);
-        });
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+          // console.log(body); //all the user info upon login
+          req.session.userid = body.id;
+          console.log('req.session.userid',req.session.userid);
+          res.redirect('/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
+        });
+
+        // we can also pass the token to the browser to make requests from there
+        
       } else {
         res.redirect('/#' +
           querystring.stringify({
@@ -111,8 +116,11 @@ routes.callback = function(req, res) {
   }
 }
 
+
+
 routes.refresh_token = function(req, res) {
 
+  console.log('I am in refresh_token');
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
@@ -134,69 +142,39 @@ routes.refresh_token = function(req, res) {
     }
   });
 }
+routes.saveLike = function(req,res){
+  console.log('im in save like');
+  var user = new User({id:req.session.userid});
+  //{displayName: req.body.displayName, id: req.body.id, email: req.body.email, spotifyURI: req.body.spotifyURI, genre:req.body.genre}
+  console.log('user',user);
+}
 
+routes.session = function(req, res, next){
+  var sess = req.session;
+  res.send(sess.userid);
+  console.log('req.session',req.session);
+  console.log('sessionid', req.session.userid);
 
-// wiki.loadPageGET = function(req, res){
-// 	//Input: req, res objects 
-// 	//Output: sends error if error finding wiki object. Else sends json object of selected wiki
+}
 
-// 	var header = req.params.title;
+// routes.saveLike = function(req, res){
+// 	//save users like to the database
 	
-// 	//find wiki object
-// 	Wiki.findOne({header:header}, function(err, wikiContent){
-// 		if(err){
-// 			res.send(err);
-// 		}
+// 	console.log('im in save like');
 
-// 		//json object to load page of a specific title
-// 		res.json(wikiContent);
-// 	})
-// };
-
-// wiki.updateWikiPOST = function(req, res){
-// 	//Input: req, res objects
-// 	//Output: sends json objects of all wiki objects to display in side bar and updated wiki object to show updated wiki page
-// 	var oldHeader = req.params.title;
-// 	var newHeader = req.body.header;
-// 	var newContent = req.body.content;
-// 	Wiki.update({header:oldHeader}, {$set: {header:newHeader, content: newContent}}, function(err, record){
-// 			Wiki.findOne({header:newHeader}, function(err, updatedObj){
-// 				Wiki.find({}, function(err, listAll){
-// 					res.json({mainWiki:updatedObj, all:listAll})
-// 				})
-// 			})
-// 	})
-// };
-
-// wiki.saveNewWikiPOST  = function(req, res){
-	
-// 	//save a new page to the database
-// 	//should redirect to new post page
-// 	console.log('save wiki');
-// 	console.log(req.body.header); 
-// 	console.log(req.body.content); 
-// 	var w = new Wiki({header: req.body.header, content: req.body.content}); 
-// 	w.save(function(err){ 
+// 	var user = new User({displayName: req.body.displayName, id: req.body.id, email: req.body.email, spotifyURI: req.body.spotifyURI, genre:req.body.genre}); 
+// 	user.save(function(err){ 
 // 		if(err){ 
-// 			console.log("there has been an error saving new wiki", err); 
-// 		}
-// 		console.log(w, 'w');
-// 		console.log("Saved new page sucessfully.")
-// 		//DO WE WANT TO REDIRECT? 
-// 		// res.redirect(200, '/api/' + w.header); 
-
-// 		Wiki.find({}, function(err, allWikis){
-// 			//DO WE WANT TO SEND JSON BACK? 
-// 			res.json({all:allWikis, newWiki: w}); 
-// 		})
-// 	});
-
-
+// 			console.log("there has been an error saving user like", err); 
+// 		}else{
+// 		console.log('usermodel', user);
+// 		console.log("Saved user info sucessfully.")};
+//   }
 // }
+
 
 // routes.catchAnything = function(req, res){ 
 // 	console.log("out of routes");
 // }
-
 
 module.exports = routes;
