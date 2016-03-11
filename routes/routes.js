@@ -94,15 +94,18 @@ routes.callback = function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body); //all the user info upon login
-        });
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+          // console.log(body); //all the user info upon login
+          req.session.userid = body.id;
+          console.log('req.session.userid',req.session.userid);
+          res.redirect('/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
+        });
+
+        // we can also pass the token to the browser to make requests from there
+        
       } else {
         res.redirect('/#' +
           querystring.stringify({
@@ -112,6 +115,8 @@ routes.callback = function(req, res) {
     });
   }
 }
+
+
 
 routes.refresh_token = function(req, res) {
 
@@ -139,13 +144,18 @@ routes.refresh_token = function(req, res) {
 }
 routes.saveLike = function(req,res){
   console.log('im in save like');
-  var user = new User({displayName: req.body.displayName, id: req.body.id, email: req.body.email, spotifyURI: req.body.spotifyURI, genre:req.body.genre});
+  var user = new User({id:req.session.userid});
+  //{displayName: req.body.displayName, id: req.body.id, email: req.body.email, spotifyURI: req.body.spotifyURI, genre:req.body.genre}
   console.log('user',user);
-
-
 }
 
+routes.session = function(req, res, next){
+  var sess = req.session;
+  res.send(sess.userid);
+  console.log('req.session',req.session);
+  console.log('sessionid', req.session.userid);
 
+}
 
 // routes.saveLike = function(req, res){
 // 	//save users like to the database

@@ -2,32 +2,39 @@ var spotinderApp = angular.module('spotinderApp', []);
 
 mainController = function ($scope, $http) {
  
-  $scope.newUser = {};
-  $http.get('/callback')
+  // $scope.newUser = {};
+  $http.get('/')
     .success(function(data){
       console.log('callbackmain',data);
-      $scope.newUser = data;
-      console.log("bahohdo", $scope.newUser)
-    })
-    .error(function(data){
-      console.log('Error:' + data);
+    //   $scope.newUser = data;
+    //   console.log("bahohdo", $scope.newUser)
+    // })
+    // .error(function(data){
+    //   console.log('Error:' + data);
     });
 
 
   $scope.login = function(){
+
     $http.post('/login')
-      .success(function(data){
-        // $scope.formData = {};
-        $scope.user = data;
-        console.log('data in login',data);
-      })
-      .error(function(data){
-        console.log('Error:' + data);
+      .success(function(user){
+        $scope.userid = user;
+        console.log('scope user id', $scope.userid);
       });
+    // $http.post('/login')
+    //   .success(function(user){
+    //     console.log('user',user);
+    //     $scope.userid = data;
+        // console.log('data in login',data);
+      // })
+      // .error(function(data){
+      //   console.log('Error:' + data);
+      // });
   };
 
   $scope.likeHipHop = function (){
-    console.log('im about to save like hiphop')
+    console.log('im about to save like hiphop', $scope.userid);
+    
     // $http.get('/')
     // .success(function(data){
     //   $scope.newUser = data.newUser;
@@ -37,17 +44,26 @@ mainController = function ($scope, $http) {
     // .error(function(data){
     //   console.log('error', data);
     // })
+    // $scope.userid = $scope.user.userid;
+    // console.log("scope.userid",$scope.userid)
+    $http.post('/saveLike',{id:$scope.userid})
+      .success(function(data){
+        console.log('it saved ur like');
+      })
+      .error(function(data){
+        console.log('error didnt save like', data);
+      })
 
-    // $http.post('/saveLike',{displayName: $scope.newUser.displayName, id: $scope.newUser.id, email: $scope.newUser.email, spotifyURI: $scope.newUser.spotifyURI, genre: $scope.newUser.genre})
-    //   .success(function(data){
-    //     $scope.newUser = data.newUser;
-    //     $scope.user = data.all;
-    //     console.log("success", $scope.newUser);
-    //     console.log("data all", data.all);
-    //   })
-    //   .error(function(data){
-    //     console.log('error', data);
-    //   })
+
+    // })
+      //   $scope.newUser = data.newUser;
+      //   $scope.user = data.all;
+      //   console.log("success", $scope.newUser);
+      //   console.log("data all", data.all);
+      // })
+      // .error(function(data){
+      //   console.log('error', data);
+      // })
   };
 
   $scope.likeIndieAlt = function(){
