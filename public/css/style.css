@@ -85,6 +85,12 @@ h3 {
   right:100px;
   top:1600px;
 }
+#matches {
+  display: inline-block;
+  position: absolute;
+  width: 70%;
+
+}
  /*FORM ELEMENTS ============================================================ */
 label, input, textarea, button {
   font-family: 'Montserrat', sans-serif;

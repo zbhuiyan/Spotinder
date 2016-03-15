@@ -75,11 +75,11 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	$scope.like = function (dataGenre, dataName, dataArtist){
 		data = {
 			genre: dataGenre, 
-			name:dataName,
-			artist:dataArtist, 
+			name: dataName,
+			artist: dataArtist, 
 			user: $scope.userData.display_name
 			}
-		console.log(data);
+		console.log('data', data);
 		var confirmationPromise = spotinderService.addLike(data);
 		confirmationPromise.then(
 	      function(confirmation) {
