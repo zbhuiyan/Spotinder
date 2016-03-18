@@ -2,9 +2,6 @@
 // The main angular service for sharing functions and variables
 
 app.service('spotinderService', function($http, $q, $location) {
-  // this.current_topic_url = '';
-  // this.editing = false;
-  // this.userData = "";
 
 // fucntion for creating topic
   this.edit = function(topicData) {
@@ -85,6 +82,7 @@ app.service('spotinderService', function($http, $q, $location) {
 
   this.addUser = function(data){
     console.log("spotinderService addUser");
+    console.log(data);
       var responseData = $http.post('/api/addUser/', data).then(function (response) {
       console.log("response.data");
       console.log(response.data);

@@ -19,6 +19,8 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 
   
 	$scope.userData = spotinderService.userData;
+	spotinderService.addUser($scope.userData);
+
 
 	$scope.like = function (dataGenre, dataName, dataArtist){
 		data = {
@@ -27,7 +29,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 			artist:dataArtist, 
 			user: $scope.userData.display_name
 			}
-		console.log(data);
+		// console.log(data);
 		var confirmationPromise = spotinderService.addLike(data);
 		confirmationPromise.then(
 	      function(confirmation) {
@@ -44,20 +46,5 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	    );		
 	};
 	
-	// $scope.likeIndieAlt = function(){
-	// 	console.log('im in likeindiealt');
-	// };
-
- //  $scope.likePop = function(){
- //    console.log('im in likepop');
- //  };
-
- //  $scope.likeRock = function(){
- //    console.log('im in likerock');
- //  };
-
- //  $scope.likeCountry = function(){
- //    console.log('im in likecountry');
- //  };
 
 });

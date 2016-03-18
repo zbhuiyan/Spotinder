@@ -4,13 +4,9 @@
 var mongoose = require('mongoose');
 // var bcrypt   = require('bcrypt');
 
-var User = mongoose.Schema({
+var user = mongoose.Schema({
   username: {
     type: String
-  },
-  userid:{
-    type: String,
-    required: true
   },
   like:{
     type: Array
@@ -22,4 +18,4 @@ var User = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("users", User);
+module.exports = mongoose.model("user", user);

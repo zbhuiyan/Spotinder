@@ -6,92 +6,229 @@ var mongoose = require('mongoose');
 var Track = require('../models/trackModel');
 var User = require('../models/userModel');
 
+// Track.find().remove().exec();
+
+
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
+}
 
 var routes = {
 
-  addUser: function(req, res){
-    // User.find().remove().exec();
-    // Track.find().remove().exec();
+  // addUser: function(req, res){
+  //   // User.find().remove().exec();
 
-    var confirm = function () {
-      console.log("save process");
-      // if (err) {
-      //   return res.send({
-      //     success: false,
-      //     message: 'ERROR: Could not create topic'
-      //   });
-      // }
-      // return res.send({
-      //   success: true,
-      //   name: req.body.name,
-      //   artist: req.body.artist,
-      //   user: req.body.user
-      // });
+  //   var confirm = function (err, user) {
+  //     console.log("save process");
+  //     console.log(err);
+  //     console.log(user);
+
+  //     // if (err) {
+  //     //   return res.send({
+  //     //     success: false,
+  //     //     message: 'ERROR: Could not create topic'
+  //     //   });
+  //     // }
+  //     // return res.send({
+  //     //   success: true,
+  //     //   name: req.body.name,
+  //     //   artist: req.body.artist,
+  //     //   user: req.body.user
+  //     // });
       
+  //     User.find(function(err, users) {
+  //     if (err) {
+  //       console.log("ERROR: Cannot retrieve users")
+  //       res.status(404);
+  //     }
+  //     res.json({
+  //       success: true,
+  //       users: users
+  //     });
+  //     });
+
+  //   };
+
+  //     var query = {'username':req.body.display_name};
+  //     var newData = {
+  //           username: req.body.display_name,
+  //         }
+
+  //     // console.log("newData: " + req.body.display_name);
+
+  //     User.findOneAndUpdate(query, newData, {upsert:true}, function(err, doc){
+  //         if (err) return res.send(500, { error: err });
+
+  //         return res.send("succesfully saved");
+
+  //     });
+  //     confirm();
+
+  //   // User.create({
+  //   //         username: req.body.display_name,
+  //   //         userid: req.body.id,
+  //   //       }, confirm);
+  // },   
+
+
+  addUser: function(req, res){
+
+   var confirm = function (err, user) {
+      console.log("user");
+      console.log(user);
+      console.log(err);
+
       User.find(function(err, users) {
       if (err) {
         console.log("ERROR: Cannot retrieve users")
         res.status(404);
       }
+      console.log("addUser confirm");
+      console.log(users);
+
       res.json({
         success: true,
         users: users
       });
-      // var topicHeaders = [];
-      // for (var i = 0; i < topics.length; i++) {
-        // topicHeaders.push({
-          // title: topics[i].title,
-          // url: topics[i].url
-        // });
-      // }
-      // res.status(200).json(topicHeaders);
+      
       });
-
     };
 
-    // console.log(req.body.display_name);
-    // console.log(req.body.id);
-      var query = {'username':req.body.display_name};
-      var newData = {
+  
+      User.find({username: req.body.display_name}, function(err, users) {
+        // console.log("users.length:");
+        // console.log(users.length);
+        // console.log(err);
+      switch(users.length) {
+        case 0: //Topic does not exist; create it!
+          User.create({
             username: req.body.display_name,
-          }
-
-      User.findOneAndUpdate(query, newData, {upsert:true}, function(err, doc){
-          if (err) return res.send(500, { error: err });
-
-          return res.send("succesfully saved");
-
-      });
-      confirm();
-
-    // User.create({
-    //         username: req.body.display_name,
-    //         userid: req.body.id,
-    //       }, confirm);
-  },   
-  addLike: function(req, res){
-   var confirm = function (err) {
-      console.log("save process");
-      if (err) {
-        return res.send({
-          success: false,
-          message: 'ERROR: Could not create topic'
-        });
+            like: [],
+          }, confirm);
+          break;
+        case 1: //Topic exists: edit it!
+          var user = users[0];
+          console.log("find the user: " + user.display_name)        
+          user.save(confirm);
+          break;
+        default: //Either the topic exists or it doesn't. Something is broken.
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: User stored incorrectly'
+          });
       }
-      return res.send({
-        success: true,
-        name: req.body.name,
-        artist: req.body.artist,
-        user: req.body.user
+    });
+
+  },
+
+
+
+
+  addLike: function(req, res){
+
+   var track_confirm = function (err, track) {
+      console.log("track");
+      console.log(track);
+      console.log(err);
+
+      // Track.find(function(err, tracks) {
+      // if (err) {
+      //   console.log("ERROR: Cannot retrieve users")
+      //   res.status(404);
+      // }
+      // console.log("addLike confirm");
+      // console.log(tracks);
+
+      // res.json({
+      //   success: true,
+      //   traks: tracks
+      // });
+      
+      // });
+    };
+
+var user_confirm = function (err, user) {
+      console.log("user");
+      console.log(user);
+      console.log(err);
+
+      User.find(function(err, users) {
+        if (err) {
+          console.log("ERROR: Cannot retrieve users")
+          res.status(404);
+        }
+        console.log("addUser confirm");
+        console.log(users);
+
+        res.json({
+          success: true,
+          users: users
+        });
       });
     };
-    console.log(req.body);
-    Track.create({
-            user: req.body.user,
+  
+  
+    Track.find({name: req.body.name, artist: req.body.artist}, function(err, tracks) {
+        // console.log("tracks.length:");
+        // console.log(tracks.length);
+        // console.log(err);
+      switch(tracks.length) {
+        case 0: //Topic does not exist; create it!
+          Track.create({
+            user: [req.body.user],
             name: req.body.name,
             artist: req.body.artist
-          }, confirm);
+          }, track_confirm);
+          break;
+        case 1: //Topic exists: edit it!
+          var track = tracks[0];
+            if(!track.user.contains(req.body.user)){
+              track.user.push(req.body.user);            
+            }          
+            track.save(track_confirm);
+          break;
+        default: //Either the topic exists or it doesn't. Something is broken.
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: Track stored incorrectly'
+          });
+      }
+    });
+
+    User.find({username: req.body.user}, function(err, users) {
+        console.log("users.length:");
+        console.log(users.length);
+        console.log(err);
+        if(users.length < 1){
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: User stored incorrectly'
+          });          
+        }     
+        var user = users[0];
+        console.log("find the user: " + user.display_name);
+        console.log("req.body.name: " + req.body.name); 
+        if(!user.like.contains(req.body.name)){
+            user.like.push(req.body.name);            
+          }          
+        user.save(user_confirm);
+      // }
+    });
+
+
   },
+  
+
+
+
+
+
   getTopic: function(req, res) {
     Topic.findOne({url: req.params.topic_url}, function (err, topic) {
       if (err) {

@@ -5,8 +5,7 @@ var mongoose = require('mongoose');
 
 var track = mongoose.Schema({
   user:{
-    type: String,
-    required: true
+    type: Array
   },
   name: {
     type: String,
@@ -14,11 +13,9 @@ var track = mongoose.Schema({
   },
   artist: {
     type: String,
-    required: true,
   },  
   created: {
     type: Date,
-    required: true,
     default: new Date()
   }
 });
