@@ -1,0 +1,24 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<h3><b>Matched Users</b></h3>
+
+<table border="1" style="width:100%" >
+  <th> 
+     Name
+  </th> 
+  <th> 
+     Matched Number
+  </th> 
+  <th> 
+    Contact
+  </th> 
+
+  <tr ng-repeat="user in matchUsers">
+    <td><center>{{user.username}}</center></td>
+    <td><center>{{user.matchedLikes}}/{{totalLikes}}</center></td>
+    <td><center>{{user.contact}}</center></td>
+  </tr>
+
+</table>

@@ -8,7 +8,7 @@ var app = angular.module('wikilab', [
   .config(function(SpotifyProvider){
     SpotifyProvider.setClientId('03ffe0cac0a0401aa6673c3cf6d02ced');
     SpotifyProvider.setRedirectUri('http://localhost:8888/callback');
-    SpotifyProvider.setScope('playlist-read-private');
+    SpotifyProvider.setScope('user-read-private playlist-read-private');
   })
   .config([
     '$routeProvider',
@@ -28,33 +28,38 @@ var app = angular.module('wikilab', [
       controller: 'userController'
     })
 
-    .when('/wiki/:topic_url/:cmd', {
-      templateUrl: 'partials/topic.html',
-      controller: 'TopicController'
+    .when('/matchUsers', {
+      templateUrl: 'partials/matchUsersPage.html',
+      controller: 'matchUsersController'
     })
 
-    .when('/wiki/:topic_url', {
-      templateUrl: 'partials/topic.html',
-      controller: 'TopicController'
-    })
+    // .when('/wiki/:topic_url/:cmd', {
+    //   templateUrl: 'partials/topic.html',
+    //   controller: 'TopicController'
+    // })
 
-    .when('/login', {
-      templateUrl: 'partials/login.html',
-      controller: 'LoginController'
-    })
+    // .when('/wiki/:topic_url', {
+    //   templateUrl: 'partials/topic.html',
+    //   controller: 'TopicController'
+    // })
 
-    .when('/signup', {
-      templateUrl: 'partials/signup.html',
-      controller: 'SignupController'
-    })
+    // .when('/login', {
+    //   templateUrl: 'partials/login.html',
+    //   controller: 'LoginController'
+    // })
 
-    .when('/logout', {
-      resolve: {
-        authentication: function(AuthService, $route) {
-          return AuthService.logout();
-        }
-      }
-    })
+    // .when('/signup', {
+    //   templateUrl: 'partials/signup.html',
+    //   controller: 'SignupController'
+    // })
+
+    // .when('/logout', {
+    //   resolve: {
+    //     authentication: function(AuthService, $route) {
+    //       return AuthService.logout();
+    //     }
+    //   }
+    // })
 
     .otherwise({ //  matches callback#(queryparams)
       redirectTo: "/"

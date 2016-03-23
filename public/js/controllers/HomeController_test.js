@@ -11,11 +11,11 @@ app.controller('HomeController_test', function ($scope, $location, Spotify, spot
 
     $scope.login = function () {
       Spotify.login().then(function (data) {
-        console.log(data);
+        // console.log(data);
         alert("You are now logged in");
         Spotify.setAuthToken(data);
         Spotify.getCurrentUser().then(function (data) {
-          console.log("getCurrentUser");
+          // console.log("getCurrentUser");
 
           spotinderService.userData = data;
           // var confirmationPromise = spotinderService.addUser(data);
@@ -28,6 +28,7 @@ app.controller('HomeController_test', function ($scope, $location, Spotify, spot
           //           console.log('ERROR: Promise error in TopicController', error);
           //       }
           //   );
+          console.log('log in');
           $location.path('/user');
 
         });

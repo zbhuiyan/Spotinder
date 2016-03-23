@@ -1,8 +1,81 @@
-// public/js/services/TodoService.js
+//x public/js/services/TodoService.js
 // The main angular service for sharing functions and variables
 
 app.service('spotinderService', function($http, $q, $location) {
 
+  this.matchUsers = {};
+  this.totalLikes = 0;
+
+  this.addLike = function(data){
+    // console.log("spotinderService addLike");
+      var responseData = $http.post('/api/addLike/', data).then(function (response) {
+      // console.log("response.data");
+      // console.log(response.data);
+
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return {
+          error: response.data.message
+        };
+      }
+    });
+    return responseData;
+  };
+
+  this.addUser = function(data){
+    // console.log("spotinderService addUser");
+    // console.log(data);
+      var responseData = $http.post('/api/addUser/', data).then(function (response) {
+      // console.log("response.data");
+      // console.log(response.data);
+
+      if (response.data.success) {
+        return response.data.users;
+      } else {
+        return {
+          error: response.data.message
+        };
+      }
+    });
+    return responseData;
+  };
+
+  this.getLikes = function(data){
+    var responseData = $http.get('/api/getLikes/'+ data.username).then(function (response) {
+      // console.log("response.data getLikes spotinderService");
+      // console.log(response.data);
+
+      if (response.data.success) {
+        return response.data.user;
+      } else {
+        return {
+          error: response.data.message
+        };
+      }
+    });
+    return responseData;
+  }
+
+  this.match = function(data){
+
+    var responseData = $http({ method: 'GET', url: '/api/match', params: {username: data.username, like: data.like}}).then(function (response) {
+
+
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return {
+          error: response.data.message
+        };
+      }
+    });
+    // console.log("responseData");
+    // console.log(responseData);
+    return responseData; 
+  }
+
+//---------------------------------------------------------------------------------------------------------------------
 // fucntion for creating topic
   this.edit = function(topicData) {
     var confirmation = $q.defer();
@@ -56,47 +129,10 @@ app.service('spotinderService', function($http, $q, $location) {
 // function for getting a list of stored topics
   this.getTopicList = function() {
     var topics = $http.get('/api/getTopicList').then(function (response) {
-        console.log(response);
+        // console.log(response);
         return response.data;
       });
     return topics;
-  };
-
-  this.addLike = function(data){
-    console.log("spotinderService addLike");
-      var responseData = $http.post('/api/addLike/', data).then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-
-      if (response.data.success) {
-        return response.data;
-      } else {
-        return {
-          title: '',
-          content: ''
-        };
-      }
-    });
-    return responseData;
-  };
-
-  this.addUser = function(data){
-    console.log("spotinderService addUser");
-    console.log(data);
-      var responseData = $http.post('/api/addUser/', data).then(function (response) {
-      console.log("response.data");
-      console.log(response.data);
-
-      if (response.data.success) {
-        return response.data.users;
-      } else {
-        return {
-          title: '',
-          content: ''
-        };
-      }
-    });
-    return responseData;
   };
 
 // function for getting a specific topic info

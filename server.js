@@ -4,7 +4,7 @@
 
 // utility modules
 var path           = require('path');
-var logger         = require('morgan');
+// var logger         = require('morgan');
 var cookieParser   = require('cookie-parser');
 
 // express modules
@@ -24,7 +24,7 @@ var session        = require('express-session');
 var MongoStore     = require('connect-mongo')(session);
 
 // CONFIGURATION ===============================================================
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -62,6 +62,8 @@ mongoose.connect('mongodb://localhost/Spot');
 // app.post('/logout', auth.logout);
 app.post('/api/addLike', routes.addLike);
 app.post('/api/addUser', routes.addUser);
+app.get('/api/getLikes/:username', routes.getLikes);
+app.get('/api/match', routes.match);
 
 // AngularJS requests
 app.get('/callback', function(req, res) {
