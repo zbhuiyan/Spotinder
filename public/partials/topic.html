@@ -1,0 +1,52 @@
+<!-- public/partials/topic.html -->
+<!-- page for creating new topic, viewing and editing existing topics including topic titiles and contents-->
+
+<div class="container-content" ng-switch="state">
+
+  <div id="topic-reading" ng-switch-when="reading">
+
+    <div class="topic-header">
+      <h2>{{title}}</h2>
+    </div>
+
+    <div class="topic-content">
+      <p>{{content}}</p>
+    </div>
+
+    <div class="container-mode-button">
+      <button
+          class="mode-button"
+          ng-click="delete()">
+        Delete
+      </button>
+      <button
+          class="mode-button"
+          ng-click="editMode()">
+        Edit
+      </button>
+    </div>
+  </div>
+
+  <form
+      id="topic-editing"
+      ng-switch-when="editing"
+      role="form"
+      ng-submit="edit(title, content)">
+
+    <div class="topic-header">
+      <input type="text" class="form-control" ng-model="title">
+    </div>
+
+    <div class="topic-content">
+      <textarea type="text" ng-model="content"></textarea>
+    </div>
+
+    <div class="container-mode-button">
+      <button
+          class="mode-button">
+        Save
+      </button>
+    </div>
+  </form>
+
+</div>

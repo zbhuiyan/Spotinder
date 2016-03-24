@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+
+  <title>Spotinder</title>
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link rel="icon" type="image/png" href="images/favicon.png?v=5">
+  
+
+  <!-- JS -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min.js"></script>
+  <script src="js/angular-local-storage.min.js"></script>
+  <script src="js/angular-spotify.js"></script>
+
+  <!-- ANGULAR CUSTOM -->
+  <script src="js/app.js"></script>
+
+  <script src="js/services/spotinderService.js"></script>
+
+
+  <script src="js/controllers/HomeController_test.js"></script>
+  <script src="js/controllers/userController.js"></script>
+  <script src="js/controllers/matchUsersController.js"></script>
+  <script src="js/controllers/MainController.js"></script>
+
+</head>
+<body ng-app="wikilab" ng-controller="MainController">
+
+  <!-- HEADER -->
+  <header id="section-header" class="container-body">
+    <a href="/" class="logo"><span>Spotinder</span></a>
+    
+  </header>
+
+  <!-- ANGULAR DYNAMIC CONTENT -->
+  <div id="section-content" class="container-body">
+    <div class="container-limiting">
+      <div ng-view></div>
+    </div>
+  </div>
+
+</body>
+</html>

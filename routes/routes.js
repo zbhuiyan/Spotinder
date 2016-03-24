@@ -1,202 +1,367 @@
-var confidential = require('../confidential');
-var express = require('express'); 
-var router = express.Router(); 
-var mongoose = require('mongoose'); 
-var path = require('path'); 
-var querystring = require('querystring');
-var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-var request = require('request'); // "Request" library
+//routes/routes.js
 
-// var Wiki = require(path.join(__dirname,'../models/wikiModel'));
+//main routing summary of app server side handling
+var express = require('express');
+var mongoose = require('mongoose');
+var Track = require('../models/trackModel');
+var User = require('../models/userModel');
+var async = require('async');
 
-
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-var stateKey = 'spotify_auth_state';
+// Track.find().remove().exec();
 
 
-
-
-routes = {}; 
-
-routes.login = function(req, res) {
-
-  var state = generateRandomString(16);
-  res.cookie(stateKey, state);
-
-  // your application requests authorization
-  var scope = 'user-read-private user-read-email';
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: confidential.client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state
-    }));
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
 }
 
-routes.callback = function(req, res) {
+var routes = {
 
-  // your application requests refresh and access tokens
-  // after checking the state parameter
 
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
+  addUser: function(req, res){
 
-  if (state === null || state !== storedState) {
-    res.redirect('/#' +
-      querystring.stringify({
-        error: 'state_mismatch'
-      }));
-  } else {
-    res.clearCookie(stateKey);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(confidential.client_id + ':' + confidential.client_secret).toString('base64'))
-      },
-      json: true
+   var confirm = function (err, user) {
+      // console.log("user");
+      // console.log(user);
+      // console.log(err);
+
+      User.find(function(err, users) {
+      if (err) {
+        console.log("ERROR: Cannot retrieve users")
+        res.status(404);
+      }
+      // console.log("addUser confirm");
+      // console.log(users);
+
+      res.json({
+        success: true,
+        users: users
+      });
+      
+      });
     };
 
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
-
-        var options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { 'Authorization': 'Bearer ' + access_token },
-          json: true
-        };
-
-        // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-          console.log(body);
-        });
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
-      } else {
-        res.redirect('/#' +
-          querystring.stringify({
-            error: 'invalid_token'
-          }));
+  
+      User.find({username: req.body.display_name}, function(err, users) {
+        // console.log("users.length:");
+        // console.log(users.length);
+        // console.log(err);
+      switch(users.length) {
+        case 0: //Topic does not exist; create it!
+          User.create({
+            username: req.body.display_name,
+            like: [],
+          }, confirm);
+          break;
+        case 1: //Topic exists: edit it!
+          var user = users[0];
+          // console.log("find the user: " + user.display_name)        
+          user.save(confirm);
+          break;
+        default: //Either the topic exists or it doesn't. Something is broken.
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: User stored incorrectly'
+          });
       }
     });
-  }
-}
 
-routes.refresh_token = function(req, res) {
+  },
 
-  // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(confidential.client_id + ':' + confidential.client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
-  };
 
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
+
+
+  addLike: function(req, res){
+
+   var trackConfirm = function (err, track) {
+      // console.log("track");
+      // console.log(track);
+      // console.log(err);
+
+      // Track.find(function(err, tracks) {
+      // if (err) {
+      //   console.log("ERROR: Cannot retrieve users")
+      //   res.status(404);
+      // }
+      // console.log("addLike confirm");
+      // console.log(tracks);
+
+      // res.json({
+      //   success: true,
+      //   traks: tracks
+      // });
+      
+      // });
+    };
+
+var userConfirm = function (err, user) {
+      // console.log("user");
+      // console.log(user);
+      // console.log(err);
+
+      User.find(function(err, users) {
+        if (err) {
+          console.log("ERROR: Cannot retrieve users")
+          res.status(404);
+        }
+        // console.log("addUser confirm");
+        // console.log(users);
+
+        res.json({
+          success: true,
+          users: users
+        });
       });
+    };
+  
+  
+    Track.find({name: req.body.name, artist: req.body.artist}, function(err, tracks) {
+        // console.log("tracks.length:");
+        // console.log(tracks.length);
+        // console.log(err);
+      switch(tracks.length) {
+        case 0: //Topic does not exist; create it!
+          Track.create({
+            user: [req.body.user],
+            name: req.body.name,
+            artist: req.body.artist
+          }, trackConfirm);
+          break;
+        case 1: //Topic exists: edit it!
+          var track = tracks[0];
+            if(!track.user.contains(req.body.user)){
+              track.user.push(req.body.user);            
+            }          
+            track.save(trackConfirm);
+          break;
+        default: //Either the topic exists or it doesn't. Something is broken.
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: Track stored incorrectly'
+          });
+      }
+    });
+
+    User.find({username: req.body.user}, function(err, users) {
+        // console.log("users.length:");
+        // console.log(users.length);
+        // console.log(err);
+        if(users.length < 1){
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: User stored incorrectly'
+          });          
+        }     
+        var user = users[0];
+        // console.log("find the user: " + user.display_name);
+        // console.log("req.body.name: " + req.body.name); 
+        if(!user.like.contains(req.body.name)){
+            user.like.push(req.body.name);            
+          }          
+        user.save(userConfirm);
+      // }
+    });
+
+
+  },
+  
+
+  getLikes: function(req, res){
+    // console.log("req.params.userame: " + req.params.username); 
+
+    User.find({username: req.params.username}, function(err, users) {
+        // console.log("users.length:");
+        // console.log(users.length);
+        // console.log(err);
+        if(users.length < 1){
+          res.status(500).send({
+            success: false,
+            message: 'ERROR: User stored incorrectly'
+          });          
+        }     
+        var user = users[0];
+        // console.log("find the user: " + user.username);
+        res.json({
+          success: true,
+          user: user
+        });
+    });
+
+  },
+
+
+  match: function(req, res){
+    // console.log(req.query.like);
+    var matchUsers = [];
+    var matchUsersFreq = [];
+    // var count = 0;
+
+    // async.parallel([
+    //     function(callback){
+    //       console.log("A");
+
+    //       req.query.like.forEach(function(trackName){
+    //         Track.find({name: trackName}, function(err, tracks) {
+    //           var track = tracks[0];
+    //           matchUsers.push.apply(matchUsers, track.user);
+    //           // count ++;
+    //           console.log(matchUsers.length);
+    //         }); 
+    //       });
+
+    //       callback(null, matchUsers);
+    //     }
+    // ],
+    // function(err, results){
+    //   console.log("final: " + matchUsers.length);  
+    //   console.log("results: " + results);    
+
+    // });
+
+    var count = 0;
+
+    var trackFindingFunctions = [];
+    req.query.like.forEach(function(trackName){
+      trackFindingFunctions.push(function(callback){
+        Track.find({name: trackName}, function(err, tracks){
+          var track = tracks[0];
+          matchUsers.push.apply(matchUsers, track.user);
+          callback(null, null);
+        });
+        
+      }); 
+    });
+
+    async.series(trackFindingFunctions, function(err, results){
+      console.log(matchUsers);
+
+      matchUsers.forEach(function(user){
+        var exist = false;
+        matchUsersFreq.forEach(function(obj){
+          if(String(obj.username) == (String(user))){
+            var userFreq = obj.matchedLikes;
+            userFreq += 1;
+            obj.username = user;
+            obj.matchedLikes = userFreq;
+            exist = true;
+          };
+        });
+
+        if(! exist){
+          var userFreq = 0;
+          userFreq += 1;
+          matchUsersFreq.push({username: user, matchedLikes: userFreq});
+        }
+        
+      });
+      console.log(matchUsersFreq);
+      res.json({
+        success: true,
+        users: matchUsersFreq,
+        totalLikes: req.query.like.length
+      });
+    });
+
     }
-  });
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------
+  // getTopic: function(req, res) {
+  //   Topic.findOne({url: req.params.topic_url}, function (err, topic) {
+  //     if (err) {
+  //       return res.send({
+  //         success: false,
+  //         message: 'ERROR: Could not create topic'
+  //       });
+  //     }
+  //     return res.send({
+  //       success: true,
+  //       title: topic.title,
+  //       url: topic.url,
+  //       content: topic.content
+  //     });
+  //   });
+  // },
+  // getTopicList: function(req, res) {
+  //   Topic.find(function(err, topics) {
+  //     if (err) {
+  //       console.log("ERROR: Cannot retrieve topics")
+  //       res.status(404);
+  //     }
+  //     var topicHeaders = [];
+  //     for (var i = 0; i < topics.length; i++) {
+  //       topicHeaders.push({
+  //         title: topics[i].title,
+  //         url: topics[i].url
+  //       });
+  //     }
+  //     res.status(200).json(topicHeaders);
+  //   });
+  // },
+  // editTopic: function(req, res) {
+  //   function confirm(err, topic) {
+  //     if (err) {
+  //       return res.send({
+  //         success: false,
+  //         message: 'ERROR: Could not create topic'
+  //       });
+  //     }
+  //     return res.send({
+  //       success: true,
+  //       title: topic.title,
+  //       url: topic.url,
+  //       content: topic.content
+  //     });
+  //   }
+  //   Topic.find({url: req.params.topic_url}, function(err, topics) {
+  //     switch(topics.length) {
+  //       case 0: //Topic does not exist; create it!
+  //         Topic.create({
+  //           user: req.user._id,
+  //           title: req.body.title.trim(),
+  //           url: req.body.title.trim().replace(/ /g,"_"),
+  //           content: req.body.content
+  //         }, confirm);
+  //         break;
+  //       case 1: //Topic exists: edit it!
+  //         var topic = topics[0];
+  //         if (topic.user.toString() == req.user._id.toString()) {
+  //           topic.title = req.body.title.trim();
+  //           topic.url = req.body.title.trim().replace(/ /g,"_");
+  //           topic.content = req.body.content;
+  //           topic.save(confirm);
+  //         } else {
+  //           res.status(401).send({
+  //             success: false,
+  //             message: 'ERROR: Not your topic'
+  //           });
+  //         }
+  //         break;
+  //       default: //Either the topic exists or it doesn't. Something is broken.
+  //         res.status(500).send({
+  //           success: false,
+  //           message: 'ERROR: Topic stored incorrectly'
+  //         });
+  //     }
+  //   });
+  // },
+  // deleteTopic: function(req, res) {
+  //   Topic.findOne({url: req.params.topic_url}).remove(function (err) {
+  //     if (err) {
+  //       return res.send({
+  //         success: false,
+  //         message: 'ERROR: Could not delete topic'
+  //       });
+  //     }
+  //     return res.send({
+  //       success: true
+  //     });
+  //   });
+  // }
 }
-
-
-// wiki.loadPageGET = function(req, res){
-// 	//Input: req, res objects 
-// 	//Output: sends error if error finding wiki object. Else sends json object of selected wiki
-
-// 	var header = req.params.title;
-	
-// 	//find wiki object
-// 	Wiki.findOne({header:header}, function(err, wikiContent){
-// 		if(err){
-// 			res.send(err);
-// 		}
-
-// 		//json object to load page of a specific title
-// 		res.json(wikiContent);
-// 	})
-// };
-
-// wiki.updateWikiPOST = function(req, res){
-// 	//Input: req, res objects
-// 	//Output: sends json objects of all wiki objects to display in side bar and updated wiki object to show updated wiki page
-// 	var oldHeader = req.params.title;
-// 	var newHeader = req.body.header;
-// 	var newContent = req.body.content;
-// 	Wiki.update({header:oldHeader}, {$set: {header:newHeader, content: newContent}}, function(err, record){
-// 			Wiki.findOne({header:newHeader}, function(err, updatedObj){
-// 				Wiki.find({}, function(err, listAll){
-// 					res.json({mainWiki:updatedObj, all:listAll})
-// 				})
-// 			})
-// 	})
-// };
-
-// wiki.saveNewWikiPOST  = function(req, res){
-	
-// 	//save a new page to the database
-// 	//should redirect to new post page
-// 	console.log('save wiki');
-// 	console.log(req.body.header); 
-// 	console.log(req.body.content); 
-// 	var w = new Wiki({header: req.body.header, content: req.body.content}); 
-// 	w.save(function(err){ 
-// 		if(err){ 
-// 			console.log("there has been an error saving new wiki", err); 
-// 		}
-// 		console.log(w, 'w');
-// 		console.log("Saved new page sucessfully.")
-// 		//DO WE WANT TO REDIRECT? 
-// 		// res.redirect(200, '/api/' + w.header); 
-
-// 		Wiki.find({}, function(err, allWikis){
-// 			//DO WE WANT TO SEND JSON BACK? 
-// 			res.json({all:allWikis, newWiki: w}); 
-// 		})
-// 	});
-
-
-// }
-
-// routes.catchAnything = function(req, res){ 
-// 	console.log("out of routes");
-// }
-
 
 module.exports = routes;

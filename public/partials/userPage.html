@@ -1,0 +1,93 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+
+<div class="container">
+  <div id="login">
+    <br>
+    <h1>Welcome to Spotinder</h1>
+  </div>
+  
+  <!-- <div id="loggedin"> -->
+    <div id="user-profile">
+      <h2>Logged in as {{userData.display_name}}</h2>
+      <div class="media">
+        <div class="pull-left">
+          <img class="media-object" width="300" src="{{userData.images.0.url}}" />
+        </div>
+        <div class="media-body">
+          <dl class="dl-horizontal">
+            <b>Display name: </b>{{userData.display_name}}<br>
+            <b>Id: </b>{{userData.id}}<br>
+            <b>Email: </b>{{userData.email}} <br>
+            <b>Spotify URI: </b><a href="{{userData.external_urls.spotify}}">{{userData.external_urls.spotify}}</a> <br>
+            <!-- <dt><b>Link</b></dt><dd><a href="{{userData.href}}">{{userData.href}}</a></dd>
+            <dt><b>Profile Image</b></dt><dd class="clearfix"><a href="{{userData.images.0.url}}">{{userData.images.0.url}}</a></dd> -->
+            <b>Country: </b>{{userData.country}}
+            <!-- <dt><b>Country</b></dt><dd>{{userData.country}}</dd> -->
+          </dl>
+
+          <div id = "likes" >
+            <h3><b>Liked</b></h3>
+              <li ng-repeat="track in likedTracks">
+                  {{track}}
+              </li>  
+          </div>
+          <br>
+          <br>
+          <div id = "matches">
+            <button id = "matches" ng-click = "match(userData.display_name, likedTracks)" class ="myButton">Matches</button>
+          </div>
+        </div>
+      </div>      
+    </div>
+
+
+    <div id = "trackSelection">
+      <select name="singleSelect" ng-model="selection">
+            <option value="sample">Sample</option>
+            <option value="personal">Personal</option>
+      </select><br>
+
+      <div ng-switch="selection">
+        <div id = "sample" ng-switch-when="sample">
+          <h3><b>Hip Hop</b></h3>
+              <li ng-repeat="track in hip_hop_genre">
+                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div> 
+              </li>  
+          <br>
+          <br>
+          <h3><b>Pop</b></h3>
+            <li ng-repeat="track in pop_genre">
+                <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div> 
+            </li>
+          <br>
+          <br>
+          <h3><b>Rock</b></h3>
+            <li ng-repeat="track in rock_genre">
+               <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div>
+            </li>
+          <br>
+          <br>
+          <h3><b>Country</b></h3>
+            <li ng-repeat="track in country_genre">
+               <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div>
+            </li>
+          <br>
+          <br>
+          <h3><b>Alternative</b></h3>
+            <li ng-repeat="track in alternative_genre">
+              <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div>
+            </li>
+        </div>
+        <div id = "personal" ng-switch-when="personal">
+              <h3><b>User Playlist</b></h3>
+              <li ng-repeat="track in userPlaylist">
+                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like('userPlaylist', track.name, track.artist)" class="myButton">Like</button></div> 
+              </li> 
+        </div>
+      </div>
+    </div>  
+    
