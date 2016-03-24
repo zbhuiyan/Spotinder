@@ -37,7 +37,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 
 
     Spotify.search('pop', 'track').then(function (data) {
-      // console.log(data);
       var trakArray = data['tracks']['items'];
       trakArray.forEach(function(track) {
 		name = track['name'];
@@ -49,7 +48,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
     });
 
       Spotify.search('rock', 'track').then(function (data) {
-      // console.log(data);
       var trakArray = data['tracks']['items'];
       trakArray.forEach(function(track) {
 		name = track['name'];
@@ -60,7 +58,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
     });
 
       Spotify.search('country', 'track').then(function (data) {
-      // console.log(data);
       var trakArray = data['tracks']['items'];
       trakArray.forEach(function(track) {
 		name = track['name'];
@@ -71,7 +68,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
     });
 
       Spotify.search('alternative', 'track').then(function (data) {
-      // console.log(data);
       var trakArray = data['tracks']['items'];
       trakArray.forEach(function(track) {
 		name = track['name'];
@@ -104,9 +100,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 					$scope.userPlaylist.push( {'name': name, "artist":artist } );
 			  	})
 			  });
-			// } catch (e) {
-			// 	pass;
-			// }
 			
 		});
 		console.log("finish");
@@ -122,15 +115,11 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 		data = {
 			username: $scope.userData.display_name
 			}
-		// console.log("getLikes userController: " + data.username);
 		var confirmationPromise = spotinderService.getLikes(data);
 		confirmationPromise.then(
 	      function(confirmation) {
 	        // console.log("getLikes confirmation");
 			$scope.likedTracks = confirmation.like.slice();
-	        // $scope.likedTracks = confirmation.like;
-			// console.log($scope.likedTracks);
-			// $scope.likedTracks.push("test");
 	      },
 	      function(error) {
 	        console.log('ERROR: Promise error in TopicController', error);
@@ -141,8 +130,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	getLikes();
 
 	$scope.like = function (dataGenre, dataName, dataArtist){
-		// console.log("like button clicked");
-		// console.log(typeof($scope.likedTracks));
 		if(!$scope.likedTracks.contains(dataName)){
 			$scope.likedTracks.push(dataName);
 	        }          
@@ -152,7 +139,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 			artist: dataArtist, 
 			user: $scope.userData.display_name
 			}
-		// console.log(data);
 		var confirmationPromise = spotinderService.addLike(data);
 		confirmationPromise.then(
 	      function(confirmation) {
@@ -166,8 +152,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	};
 	
 	$scope.match = function(username, likedTracks){
-		// console.log(username);
-		// console.log(likedTracks);
 
 		data = {
 			username: username,
