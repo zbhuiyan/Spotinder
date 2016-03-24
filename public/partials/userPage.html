@@ -83,6 +83,10 @@
             </li>
         </div>
         <div id = "personal" ng-switch-when="personal">
+              <h3><b>User Playlist</b></h3>
+              <li ng-repeat="track in userPlaylist">
+                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like('userPlaylist', track.name, track.artist)" class="myButton">Like</button></div> 
+              </li> 
         </div>
       </div>
     </div>  

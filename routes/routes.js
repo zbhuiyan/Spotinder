@@ -198,6 +198,7 @@ var userConfirm = function (err, user) {
   match: function(req, res){
     // console.log(req.query.like);
     var matchUsers = [];
+    var matchUsersFreq = [];
     // var count = 0;
 
     // async.parallel([
@@ -223,31 +224,49 @@ var userConfirm = function (err, user) {
     // });
 
     var count = 0;
+
     var trackFindingFunctions = [];
     req.query.like.forEach(function(trackName){
       trackFindingFunctions.push(function(callback){
         Track.find({name: trackName}, function(err, tracks){
           var track = tracks[0];
           matchUsers.push.apply(matchUsers, track.user);
-          count ++;
-          console.log(count);
+          callback(null, null);
         });
-        callback(null, null);
+        
       }); 
     });
-    async.parallel(trackFindingFunctions, function(err, results){
+
+    async.series(trackFindingFunctions, function(err, results){
       console.log(matchUsers);
-      console.log('final')
+
+      matchUsers.forEach(function(user){
+        var exist = false;
+        matchUsersFreq.forEach(function(obj){
+          if(String(obj.username) == (String(user))){
+            var userFreq = obj.matchedLikes;
+            userFreq += 1;
+            obj.username = user;
+            obj.matchedLikes = userFreq;
+            exist = true;
+          };
+        });
+
+        if(! exist){
+          var userFreq = 0;
+          userFreq += 1;
+          matchUsersFreq.push({username: user, matchedLikes: userFreq});
+        }
+        
+      });
+      console.log(matchUsersFreq);
+      res.json({
+        success: true,
+        users: matchUsersFreq,
+        totalLikes: req.query.like.length
+      });
     });
 
-
-      var matchUsersMap = [ { username:'Anne', matchedLikes: 4 },   { username: 'Yuki', matchedLikes: 8}, { username: 'Michael Dan', matchedLikes: 6} ];
-
-      res.json({
-          success: true,
-          users: matchUsersMap,
-          totalLikes: req.query.like.length
-        });
     }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------

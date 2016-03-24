@@ -86,16 +86,31 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	$scope.userData = spotinderService.userData;
 	spotinderService.addUser($scope.userData);
 
-	var playlist = null;
+
+	$scope.userPlaylist = [];
+
 	Spotify.getUserPlaylists( $scope.userData.id).then(function (data) {
-		playlist = data;
+		var playlist = data;
 		
-		Spotify
-		  .getPlaylistTracks($scope.userData.id, String(playlist.items[2].id))
-		  .then(function (data) {
-		  	console.log("specific playlist");
-			console.log(data);
-		  });
+		playlist.items.forEach(function(playlist){
+			// try {
+			Spotify
+			  .getPlaylistTracks($scope.userData.id, String(playlist.id))
+			  .then(function (data) {
+			  	// console.log("specific playlist");
+			  	data.items.forEach(function(track){
+					var name = track.track.name;
+					var artist = track.track.artists[0].name;
+					$scope.userPlaylist.push( {'name': name, "artist":artist } );
+			  	})
+			  });
+			// } catch (e) {
+			// 	pass;
+			// }
+			
+		});
+		console.log("finish");
+		console.log($scope.userPlaylist);
 	});
 
 

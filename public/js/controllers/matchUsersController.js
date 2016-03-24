@@ -13,6 +13,7 @@ app.controller('matchUsersController', function($scope, spotinderService) {
 	}
 
 	$scope.matchUsers = spotinderService.matchUsers;
+	$scope.userPlaylist = spotinderService.userPlaylist;
 	$scope.totalLikes = spotinderService.totalLikes;
 
 

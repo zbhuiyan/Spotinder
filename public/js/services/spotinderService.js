@@ -70,8 +70,8 @@ app.service('spotinderService', function($http, $q, $location) {
         };
       }
     });
-    // console.log("responseData");
-    // console.log(responseData);
+    console.log("responseData");
+    console.log(responseData);
     return responseData; 
   }
 
