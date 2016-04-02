@@ -47,7 +47,8 @@ app.get('*', function (req, res) {
 });
 
 // START SERVER ================================================================
-var PORT = process.env.PORT || 8888;
+// var PORT = process.env.PORT || 	8888;
+var PORT = 8888
 app.listen(PORT, function() {
   console.log("Topics running on port:", PORT);
 });
