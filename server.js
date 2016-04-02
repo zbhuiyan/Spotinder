@@ -30,7 +30,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CONNECT TO DATABASE =========================================================
-mongoose.connect('mongodb://localhost/Spot');
+
+var MONGOURI = process.env.MONGOURI || 'mongodb://localhost/Spot';
+mongoose.connect(MONGOURI);
 
 app.post('/api/addLike', routes.addLike);
 app.post('/api/addUser', routes.addUser);
@@ -47,8 +49,7 @@ app.get('*', function (req, res) {
 });
 
 // START SERVER ================================================================
-// var PORT = process.env.PORT || 	8888;
-var PORT = 8888
+var PORT = process.env.PORT || 	8888;
 app.listen(PORT, function() {
   console.log("Topics running on port:", PORT);
 });
