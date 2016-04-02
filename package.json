@@ -2,7 +2,7 @@
   "name": "angular-spotify",
   "version": "1.2.1",
   "description": "Angular Service to connect to Spotify Web API",
-  "main": "src/angular-spotify.js",
+  "main": "server.js",
   "devDependencies": {
     "codecov.io": "^0.1.2",
     "coveralls": "^2.11.2",

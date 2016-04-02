@@ -1,12 +1,12 @@
 {
-  "name": "todos",
+  "name": "Spotinder",
   "version": "0.0.1",
-  "description": "A simple todos app made with angularjs",
+  "description": "A simple Spotinder app made with angularjs",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ian Hill",
+  "author": "Zhecan Wang",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.5",
