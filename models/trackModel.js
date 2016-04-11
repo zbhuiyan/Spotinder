@@ -20,4 +20,5 @@ var track = mongoose.Schema({
   }
 });
 
+// Mongoose will authomatically translate these to uppercase "Tracks" with an 's'
 module.exports = mongoose.model("track", track);
