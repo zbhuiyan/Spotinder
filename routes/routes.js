@@ -20,6 +20,7 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
+// Instead, create a routes= {} object and append new methods as routes.something = function(req, res){...}
 var routes = {
 
 

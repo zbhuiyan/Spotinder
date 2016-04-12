@@ -1,5 +1,6 @@
 app.controller('HomeController_test', function ($scope, $location, Spotify, spotinderService) {
-
+// I really like how you split up your code into different controllers, yet there is no documentation as to how they work and 
+// communicate - to prove me you understand how it works
 
     $scope.searchArtist = function () {
       Spotify.search($scope.searchartist, 'artist').then(function (data) {
