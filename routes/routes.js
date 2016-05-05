@@ -10,6 +10,7 @@ var async = require('async');
 // Track.find().remove().exec();
 
 
+// It's probably not great to modify the prototype of primitave types, I would also use indexOf() == -1 its more efficient
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -37,12 +38,13 @@ var routes = {
         success: true,
         users: users
       });
-      
+
       });
     };
 
-  
+
       User.find({username: req.body.display_name}, function(err, users) {
+          // an if else is probably better than a switch for two cases
       switch(users.length) {
         case 0: //Topic does not exist; create it!
           User.create({
@@ -69,7 +71,8 @@ var routes = {
 
   addLike: function(req, res){
 
-    var trackConfirm = function (err, track) {      
+    // empty function?
+    var trackConfirm = function (err, track) {
     };
 
     var userConfirm = function (err, user) {
@@ -88,9 +91,10 @@ var routes = {
         });
         });
       };
-  
-  
+
+
     Track.find({name: req.body.name, artist: req.body.artist}, function(err, tracks) {
+      
       switch(tracks.length) {
         case 0: //Topic does not exist; create it!
           Track.create({
@@ -102,8 +106,8 @@ var routes = {
         case 1: //Topic exists: edit it!
           var track = tracks[0];
             if(!track.user.contains(req.body.user)){
-              track.user.push(req.body.user);            
-            }          
+              track.user.push(req.body.user);
+            }
             track.save(trackConfirm);
           break;
         default: //Either the topic exists or it doesn't. Something is broken.
@@ -119,18 +123,18 @@ var routes = {
           res.status(500).send({
             success: false,
             message: 'ERROR: User stored incorrectly'
-          });          
-        }     
+          });
+        }
         var user = users[0];
         if(!user.like.contains(req.body.name)){
-            user.like.push(req.body.name);            
-          }          
+            user.like.push(req.body.name);
+          }
         user.save(userConfirm);
     });
 
 
   },
-  
+
 
   getLikes: function(req, res){
 
@@ -139,8 +143,8 @@ var routes = {
           res.status(500).send({
             success: false,
             message: 'ERROR: User stored incorrectly'
-          });          
-        }     
+          });
+        }
         var user = users[0];
         res.json({
           success: true,
@@ -158,17 +162,20 @@ var routes = {
     var count = 0;
 
     var trackFindingFunctions = [];
+    // probably better as a map
     req.query.like.forEach(function(trackName){
       trackFindingFunctions.push(function(callback){
         Track.find({name: trackName}, function(err, tracks){
           var track = tracks[0];
+          // why not just return with callback?
           matchUsers.push.apply(matchUsers, track.user);
           callback(null, null);
         });
-        
-      }); 
+
+      });
     });
 
+    //why not parallel?
     async.series(trackFindingFunctions, function(err, results){
 
       matchUsers.forEach(function(user){
@@ -188,7 +195,7 @@ var routes = {
           userFreq += 1;
           matchUsersFreq.push({username: user, matchedLikes: userFreq});
         }
-        
+
       });
       res.json({
         success: true,

@@ -9,7 +9,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location) {
   this.login = function(credentials) {
     var service = this;
     $http.post('/login', credentials).then(function success(response) {
-      
+
       service.authenticated = response.data.authenticated;
       if (service.authenticated) {
         $location.path('/');
