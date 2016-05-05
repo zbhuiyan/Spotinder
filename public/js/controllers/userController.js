@@ -11,7 +11,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	$scope.alternative_genre = [];
 
 
-
 	Array.prototype.contains = function(obj) {
 	    var i = this.length;
 	    while (i--) {
@@ -43,7 +42,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 		artist = track['artists'][0]['name'];
 		$scope.pop_genre.push( { 'genre': 'pop', 'name':name, "artist":artist } );
 		$scope.pop_genre = $scope.pop_genre.slice(0,3);
-		
       });
     });
 
@@ -78,7 +76,6 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
     });
 
 
-  
 	$scope.userData = spotinderService.userData;
 	spotinderService.addUser($scope.userData);
 
@@ -87,7 +84,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 
 	Spotify.getUserPlaylists( $scope.userData.id).then(function (data) {
 		var playlist = data;
-		
+
 		playlist.items.forEach(function(playlist){
 			// try {
 			Spotify
@@ -100,7 +97,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 					$scope.userPlaylist.push( {'name': name, "artist":artist } );
 			  	})
 			  });
-			
+
 		});
 		console.log("finish");
 		console.log($scope.userPlaylist);
@@ -124,7 +121,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	      function(error) {
 	        console.log('ERROR: Promise error in TopicController', error);
 	      }
-	    );		
+	    );
 	};
 
 	getLikes();
@@ -132,11 +129,11 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	$scope.like = function (dataGenre, dataName, dataArtist){
 		if(!$scope.likedTracks.contains(dataName)){
 			$scope.likedTracks.push(dataName);
-	        }          
+	        }
 		data = {
-			genre: dataGenre, 
+			genre: dataGenre,
 			name: dataName,
-			artist: dataArtist, 
+			artist: dataArtist,
 			user: $scope.userData.display_name
 			}
 		var confirmationPromise = spotinderService.addLike(data);
@@ -148,9 +145,9 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	      function(error) {
 	        console.log('ERROR: Promise error in TopicController', error);
 	      }
-	    );		
+	    );
 	};
-	
+
 	$scope.match = function(username, likedTracks){
 
 		data = {
@@ -160,6 +157,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 		var confirmationPromise = spotinderService.match(data);
 		confirmationPromise.then(
 	      function(confirmation) {
+            // should probably get rid of all the debugging logs
 	      	console.log("confirmation");
 	      	console.log(confirmation.users);
 	      	console.log(confirmation.totalLikes);
@@ -171,7 +169,7 @@ app.controller('userController', function($scope, spotinderService, Spotify) {
 	      function(error) {
 	        console.log('ERROR: Promise error in TopicController', error);
 	      }
-	    );	
+	    );
 	};
 
 });

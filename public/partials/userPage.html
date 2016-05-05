@@ -9,7 +9,7 @@
     <br>
     <h1>Welcome to Spotinder</h1>
   </div>
-  
+
   <!-- <div id="loggedin"> -->
     <div id="user-profile">
       <h2>Logged in as {{userData.display_name}}</h2>
@@ -33,7 +33,7 @@
             <h3><b>Liked</b></h3>
               <li ng-repeat="track in likedTracks">
                   {{track}}
-              </li>  
+              </li>
           </div>
           <br>
           <br>
@@ -41,7 +41,7 @@
             <button id = "matches" ng-click = "match(userData.display_name, likedTracks)" class ="myButton">Matches</button>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
 
 
@@ -55,13 +55,13 @@
         <div id = "sample" ng-switch-when="sample">
           <h3><b>Hip Hop</b></h3>
               <li ng-repeat="track in hip_hop_genre">
-                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div> 
-              </li>  
+                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div>
+              </li>
           <br>
           <br>
           <h3><b>Pop</b></h3>
             <li ng-repeat="track in pop_genre">
-                <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div> 
+                <div> {{track.name}}  ---- {{track.artist}} <button class = "like" ng-click = "like(track.genre, track.name, track.artist)" class="myButton">Like</button></div>
             </li>
           <br>
           <br>
@@ -85,9 +85,9 @@
         <div id = "personal" ng-switch-when="personal">
               <h3><b>User Playlist</b></h3>
               <li ng-repeat="track in userPlaylist">
-                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like('userPlaylist', track.name, track.artist)" class="myButton">Like</button></div> 
-              </li> 
+                    <div> {{track.name}}  ---- {{track.artist}} <button id = "like" ng-click = "like('userPlaylist', track.name, track.artist)" class="myButton">Like</button></div>
+              </li>
         </div>
       </div>
-    </div>  
-    
+    </div>
+
